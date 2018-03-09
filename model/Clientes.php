@@ -43,7 +43,7 @@ class Clientes{
         return $consulta->execute();
     }
 
-    public static function BajaPorId($id){
+    public static function bajaPorId($id){
         
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
         $consulta =$objetoAccesoDato->RetornarConsulta("
@@ -55,7 +55,7 @@ class Clientes{
         return $consulta->rowCount();
     }
 
-    public static function TraerTodos(){
+    public static function traerTodos(){
 
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
         $consulta =$objetoAccesoDato->RetornarConsulta("SELECT id,nombre,apellido,documento,telefono,direccion,email FROM clientes");
@@ -63,7 +63,7 @@ class Clientes{
         return $consulta->fetchAll(PDO::FETCH_CLASS,"Clientes");
     }
 
-    public static function BuscarPorId($id){
+    public static function buscarPorId($id){
 
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
         $consulta = $objetoAccesoDato->RetornarConsulta("SELECT id,nombre,apellido,documento,telefono,direccion,email FROM clientes WHERE id=:id");
