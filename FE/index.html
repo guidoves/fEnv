@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="icon" type="image/x-icon" href="img/icono.png">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy"
+	 crossorigin="anonymous">
+	<link rel="stylesheet" href="css/styles.css">
+	<title>Envios Farmacia</title>
+</head>
+
+<body>
+	<div class="container">
+		<header>
+			<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+				<a id="btnEnvios" class="navbar-brand" href="#">Envios Farmacia</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+				 aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" href="#">
+								Operaciones
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown1">
+								<a href="#" class="dropdown-item">Nuevo Envio</a>
+								<a href="#" class="dropdown-item">Historial Operaciones</a>
+							</div>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" href="#">
+								Clientes
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown2">
+								<a href="#" data-controls-modal="altaCliente" data-backdrop="static" data-keyboard="false" class="dropdown-item" data-toggle="modal"
+								 data-target="#altaCliente">Alta Cliente</a>
+								<a href="#" class="dropdown-item">Buscar Cliente</a>
+							</div>
+						</li>
+					</ul>
+					<a class="nav-link" href="#" id="">
+						Perfil
+					</a>
+					<a class="nav-link" href="#" id="">
+						Cerrar Sesion
+					</a>
+				</div>
+			</nav>
+
+		</header>
+		<section id="index">
+		</section>
+	</div>
+
+	<div id="altaCliente" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Alta Cliente</h5>
+					<button type="button" class="close" onclick="cerrarAltaVehiculo()" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="form-group">
+							<label for="txtNombre">Nombre</label>
+							<input type="text" class="form-control" id="txtNombre" placeholder="Ingrese nombre">
+							<small id="eNombre" class="error">Ingreso invalido. 1 a 20 caracteres. No caracteres especiales.</small>
+						</div>
+
+						<div class="form-group">
+							<label for="txtApellido">Apellido</label>
+							<input type="text" class="form-control" id="txtApellido" placeholder="Ingrese apellido">
+							<small id="eApellido" class="error">Ingreso invalido. 1 a 20 caracteres. No caracteres especiales.</small>
+						</div>
+
+						<div class="form-group">
+							<label for="txtDocumento">Documento</label>
+							<input type="text" class="form-control" id="txtDocumento" aria-describedby="" placeholder="Ingrese documento">
+							<small id="eDocumento" class="error">Ingreso invalido. 1 a 20 caracteres. No caracteres especiales.</small>
+							<small class="form-text text-muted">No obligatorio.</small>
+						</div>
+						<div class="form-group">
+							<label for="txtTelefono">Telefono</label>
+							<input type="text" class="form-control" id="txtTelefono" aria-describedby="" placeholder="Ingrese telefono">
+							<small id="eTelefono" class="error">Ingreso invalido. 1 a 20 caracteres. No caracteres especiales.</small>
+						</div>
+						<div class="form-group">
+							<label for="txtDireccion">Direccion</label>
+							<input type="text" class="form-control" id="txtDireccion" aria-describedby="" placeholder="Ingrese direccion">
+							<small id="eDireccion" class="error">Ingreso invalido. 1 a 20 caracteres. No caracteres especiales.</small>
+						</div>
+						<div class="form-group">
+							<label for="txtEmail">Email</label>
+							<input type="text" class="form-control" id="txtEmail" aria-describedby="" placeholder="Ingrese email">
+							<small id="eEmail" class="error">Ingreso invalido.</small>
+							<small class="form-text text-muted">No obligatorio.</small>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success" onclick="validarAltaVehiculo()">Alta Cliente</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cerrarAltaVehiculo()">Cerrar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+ crossorigin="anonymous"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+ crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
+ crossorigin="anonymous"></script>
+
+
+</html>

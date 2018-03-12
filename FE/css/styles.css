@@ -1,0 +1,12 @@
+.valido{
+    border-color: green;
+}
+
+.invalido{
+    border-color: red;
+}
+
+.error{
+    color : red;
+}
+
