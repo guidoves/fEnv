@@ -97,6 +97,9 @@ function altaCliente() {
         success: function (response) {
             alert(response.ok);
             $("#btnCerrarAltaCliente").click();
+        },
+        error: function (response) {
+            alert(response.statusText);
         }
     });
     //alert("Todo OK!");
@@ -132,5 +135,36 @@ function restablecerAltaCliente() {
     $("#eEmail").hide();
 }
 function agendaTemplate() {
-    var html = "";
+    $("#index").html("<strong style='color : red'>No hay datos de clientes.</strong>");
+    var template = "<div class=\"agenda\">\n    <div class=\"card\">\n        <div class=\"card-title\">\n            <strong>AGENDA DE CLIENTES</strong>\n        </div>\n        <div class=\"card-body\">\n            <table class=\"table table-striped\">\n                <thead>\n                    <tr>\n                        <th scope=\"col\">Apellido</th>\n                        <th scope=\"col\">Nombre</th>\n                        <th scope=\"col\">Documento</th>\n                        <th scope=\"col\">Acci\u00F3n</th>\n                    </tr>\n                </thead>\n                <tbody id=\"bodyAgenda\">\n                </tbody>\n            </table>\n        </div>\n    </div>\n</div>";
+    $.ajax({
+        type: "get",
+        url: "http://localhost/workspace/fEnv/public/operativas/clientesordenados",
+        success: function (response) {
+            $("#index").html(template);
+            var body = "";
+            for (var index = 0; index < response.length; index++) {
+                body += "<tr><td>" + response[index].apellido + "</td><td>" + response[index].nombre + "</td><td>" + response[index].documento + "</td><td><button class='btn btn-link' data-controls-modal='vistaCliente' data-backdrop='static' data-keyboard='false' class='dropdown-item' data-toggle='modal' data-target='#vistaCliente' onclick='vistaCliente(" + response[index].id + ")'>Ver</button></td></tr>";
+            }
+            $("#bodyAgenda").html(body);
+        },
+        error: function (response) {
+            alert(response.statusText);
+        }
+    });
+}
+function vistaCliente(id) {
+    $.ajax({
+        type: "get",
+        url: "http://localhost/workspace/fEnv/public/operativas/clienteid?id=" + id,
+        success: function (response) {
+            var html = "<div><label for=\"\">Nombre:&nbsp</label>" + response[0].nombre + "</div><br>\n            <div><label for=\"\">Apellido:&nbsp</label>" + response[0].apellido + "</div><br>\n            <div><label for=\"\">Documento:&nbsp</label>" + response[0].documento + "</div><br>\n            <div><label for=\"\">Telefono:&nbsp</label>" + response[0].telefono + "</div><br>\n            <div><label for=\"\">Direccion:&nbsp</label>" + response[0].direccion + "</div><br>\n            <div><label for=\"\">Email:&nbsp</label>" + response[0].email + "</div><br>";
+            $("#vistaClienteBody").html(html);
+        },
+        error: function (response) {
+            alert(response.statusText);
+        }
+    });
+}
+function bajaCliente(id) {
 }

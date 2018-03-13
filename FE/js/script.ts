@@ -97,21 +97,24 @@ function altaCliente() {
     let email = $('#txtEmail').val();
 
     let cliente = {
-        "nombre" : nombre,
-        "apellido" : apellido,
-        "documento" : documento,
-        "telefono" : telefono,
-        "direccion" : direccion,
-        "email" : email
+        "nombre": nombre,
+        "apellido": apellido,
+        "documento": documento,
+        "telefono": telefono,
+        "direccion": direccion,
+        "email": email
     };
 
     $.ajax({
-        data : cliente,
+        data: cliente,
         type: "post",
-        url : "http://localhost/workspace/fEnv/public/nuevocliente",
-        success : function(response){
+        url: "http://localhost/workspace/fEnv/public/nuevocliente",
+        success: function (response) {
             alert(response.ok);
             $("#btnCerrarAltaCliente").click();
+        },
+        error: function (response) {
+            alert(response.statusText);
         }
 
     });
@@ -153,7 +156,73 @@ function restablecerAltaCliente() {
     $("#eEmail").hide();
 }
 
-function agendaTemplate(){
+function agendaTemplate() {
 
-    let html:string = ``;
+    $("#index").html("<strong style='color : red'>No hay datos de clientes.</strong>");
+    let template: string = `<div class="agenda">
+    <div class="card">
+        <div class="card-title">
+            <strong>AGENDA DE CLIENTES</strong>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Apellido</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Documento</th>
+                        <th scope="col">Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="bodyAgenda">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>`;
+
+    $.ajax({
+        type: "get",
+        url: "http://localhost/workspace/fEnv/public/operativas/clientesordenados",
+        success: function (response) {
+            $("#index").html(template);
+            let body: string = "";
+
+            for (let index = 0; index < response.length; index++) {
+                body += "<tr><td>" + response[index].apellido + "</td><td>" + response[index].nombre + "</td><td>" + response[index].documento + "</td><td><button class='btn btn-link' data-controls-modal='vistaCliente' data-backdrop='static' data-keyboard='false' class='dropdown-item' data-toggle='modal' data-target='#vistaCliente' onclick='vistaCliente("+response[index].id+")'>Ver</button></td></tr>";
+
+            }
+            $("#bodyAgenda").html(body);
+
+        },
+        error: function (response) {
+            alert(response.statusText);
+        }
+    });
+}
+
+function vistaCliente(id:number){
+    
+
+    $.ajax({
+        type : "get",
+        url : "http://localhost/workspace/fEnv/public/operativas/clienteid?id="+id,
+        success: function(response){
+            let html = `<div><label for="">Nombre:&nbsp</label>`+response[0].nombre+`</div><br>
+            <div><label for="">Apellido:&nbsp</label>`+response[0].apellido+`</div><br>
+            <div><label for="">Documento:&nbsp</label>`+response[0].documento+`</div><br>
+            <div><label for="">Telefono:&nbsp</label>`+response[0].telefono+`</div><br>
+            <div><label for="">Direccion:&nbsp</label>`+response[0].direccion+`</div><br>
+            <div><label for="">Email:&nbsp</label>`+response[0].email+`</div><br>`;
+            $("#vistaClienteBody").html(html);  
+        },      
+        error: function (response){
+            alert(response.statusText);
+        }
+
+    });
+}
+
+function bajaCliente(id:number){
+    
 }

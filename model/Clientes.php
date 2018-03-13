@@ -10,6 +10,7 @@ class Clientes{
     public $telefono;
     public $direccion;
     public $email;
+    public $estado;
 
 
     //ABM
@@ -17,7 +18,7 @@ class Clientes{
     public function alta(){
 
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
-        $consulta = $objetoAccesoDato->RetornarConsulta("INSERT into clientes (nombre,apellido,documento,telefono,direccion,email) values('$this->nombre','$this->apellido','$this->documento','$this->telefono','$this->direccion','$this->email')");
+        $consulta = $objetoAccesoDato->RetornarConsulta("INSERT into clientes (nombre,apellido,documento,telefono,direccion,email,estado) values('$this->nombre','$this->apellido','$this->documento','$this->telefono','$this->direccion','$this->email','ACTIVO')");
         $consulta->execute();
         return $objetoAccesoDato->RetornarUltimoIdInsertado();
     }
@@ -47,9 +48,11 @@ class Clientes{
         
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
         $consulta =$objetoAccesoDato->RetornarConsulta("
-        delete 
+        UPDATE
+        set estado=:estado 
         from clientes 				
-        WHERE id=:id");	
+        WHERE id=:id");
+        $consulta->bindValue(':estado','BAJA',PDO::PARAM_STR);	
         $consulta->bindValue(':id',$id, PDO::PARAM_INT);		
         $consulta->execute();
         return $consulta->rowCount();
@@ -71,6 +74,15 @@ class Clientes{
         $consulta->execute();
         return $consulta->fetchAll(PDO::FETCH_CLASS,"Clientes");
 
+    }
+
+    public static function traerTodosOrdenadosPorNombre(){
+
+        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
+        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT id,nombre,apellido,documento from clientes WHERE estado=:estado ORDER BY apellido,nombre,documento");
+        $consulta->bindValue(':estado','ACTIVO',PDO::PARAM_STR);
+        $consulta->execute();
+        return $consulta->fetchAll(PDO::FETCH_CLASS,"Clientes");
     }
 }
 

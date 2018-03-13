@@ -12,6 +12,7 @@ require_once '../mw/Cors.php';
 
 //CONTROLLERS
 require_once '../controller/EmpleadoController.php';
+require_once '../controller/Operativas.php';
 
 $configuration = [
     'settings' => [
@@ -33,6 +34,10 @@ $app->get('/hello/{name}', function (Request $request, Response $response) {
 
 //General
 $app->post('/nuevocliente', \EmpleadoController::class . ':AltaCliente')->add(\Cors::class . ':HabilitarCORSTodos');
+
+//Operativas
+$app->get('/operativas/clientesordenados', \Operativas::class . ':traerClientesOrdenados')->add(\Cors::class . ':HabilitarCORSTodos');
+$app->get('/operativas/clienteid', \Operativas::class . ':traerCliente')->add(\Cors::class . ':HabilitarCORSTodos');
 
 //Rutas Solo Admin
 //$app->post('/nuevoempleado', \EmpleadoController::class . ':NuevoEmpleado')->add(\MWValidaciones::class . ':ValidarNuevoEmpleado')->add(\ValidacionPermisos::class . ':VerificarAdmin');

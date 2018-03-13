@@ -23,7 +23,6 @@ class EmpleadoController{
             $respuesta->error = $ex->getMessage();
             return $response->withJson($respuesta,500);
         }
-
     }
 }
 

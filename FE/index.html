@@ -39,7 +39,7 @@
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown2">
 								<a href="#" data-controls-modal="altaCliente" data-backdrop="static" data-keyboard="false" class="dropdown-item" data-toggle="modal"
 								 data-target="#altaCliente">Alta Cliente</a>
-								<a href="#" class="dropdown-item">Ver Agenda</a>
+								<a href="#" class="dropdown-item" onclick="agendaTemplate()">Ver Agenda</a>
 							</div>
 						</li>
 					</ul>
@@ -51,30 +51,8 @@
 					</a>
 				</div>
 			</nav>
-
 		</header>
 		<section id="index">
-			<div>
-				<div class="card">
-					<div class="card-title">
-						<strong>AGENDA DE CLIENTES</strong>
-					</div>
-					<div class="card-body">
-						<table class="table table-striped">
-							<thead>
-								<tr>
-									<th scope="col">Nombre</th>
-									<th scope="col">Apellido</th>
-									<th scope="col">Documento</th>
-									<th scope="col">Acción</th>
-								</tr>
-							</thead>
-							<tbody id="bodyAgenda">
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
 		</section>
 	</div>
 
@@ -128,6 +106,26 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-success" onclick="validarAltaCliente()">Alta Cliente</button>
 					<button type="button" id="btnCerrarAltaCliente" class="btn btn-secondary" data-dismiss="modal" onclick="cerrarAltaCliente()">Cerrar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="vistaCliente" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<div class="modal-header">
+					<h5 class="modal-title">Cliente</h5>
+					<button type="button" class="close" onclick="" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" id="vistaClienteBody">
+
+				</div>
+				<div class="modal-footer" id="vistaClienteFooter">
+					<button class="btn btn-warning">Modificar</button>
+					<button class="btn btn-danger">Eliminar</button>
 				</div>
 			</div>
 		</div>
