@@ -7,8 +7,11 @@ require '../vendor/autoload.php';
 
 //MIDDLEWARE
 
-//require_once '../mw/Cors.php';
+require_once '../mw/Cors.php';
 //require_once '../mw/MwValidaciones.php';
+
+//CONTROLLERS
+require_once '../controller/EmpleadoController.php';
 
 $configuration = [
     'settings' => [
@@ -29,7 +32,7 @@ $app->get('/hello/{name}', function (Request $request, Response $response) {
 });
 
 //General
-
+$app->post('/nuevocliente', \EmpleadoController::class . ':AltaCliente')->add(\Cors::class . ':HabilitarCORSTodos');
 
 //Rutas Solo Admin
 //$app->post('/nuevoempleado', \EmpleadoController::class . ':NuevoEmpleado')->add(\MWValidaciones::class . ':ValidarNuevoEmpleado')->add(\ValidacionPermisos::class . ':VerificarAdmin');

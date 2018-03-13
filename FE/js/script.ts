@@ -89,8 +89,35 @@ function validarAltaCliente() {
 }
 
 function altaCliente() {
-    alert("Todo OK!");
-    cerrarAltaCliente();
+    let nombre = $('#txtNombre').val();
+    let apellido = $('#txtApellido').val();
+    let documento = $('#txtDocumento').val();
+    let telefono = $('#txtTelefono').val();
+    let direccion = $('#txtDireccion').val();
+    let email = $('#txtEmail').val();
+
+    let cliente = {
+        "nombre" : nombre,
+        "apellido" : apellido,
+        "documento" : documento,
+        "telefono" : telefono,
+        "direccion" : direccion,
+        "email" : email
+    };
+
+    $.ajax({
+        data : cliente,
+        type: "post",
+        url : "http://localhost/workspace/fEnv/public/nuevocliente",
+        success : function(response){
+            alert(response.ok);
+            $("#btnCerrarAltaCliente").click();
+        }
+
+    });
+
+    //alert("Todo OK!");
+    //cerrarAltaCliente();
 }
 
 function cerrarAltaCliente() {
@@ -101,6 +128,7 @@ function cerrarAltaCliente() {
     $("#txtTelefono").val("");
     $("#txtDireccion").val("");
     $("#txtEmail").val("");
+
 }
 
 function restablecerAltaCliente() {
@@ -123,4 +151,9 @@ function restablecerAltaCliente() {
     $("#txtEmail").removeClass();
     $("#txtEmail").addClass('form-control');
     $("#eEmail").hide();
+}
+
+function agendaTemplate(){
+
+    let html:string = ``;
 }

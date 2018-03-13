@@ -5,7 +5,7 @@ class AccesoDatos
     private $objetoPDO;
 
     private static $localhost = 'localhost';
-    private static $dbname = 'tp';
+    private static $dbname = 'farmacia';
     private static $user = 'root';
     private static $pass = '';
  

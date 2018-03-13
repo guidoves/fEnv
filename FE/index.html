@@ -39,7 +39,7 @@
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown2">
 								<a href="#" data-controls-modal="altaCliente" data-backdrop="static" data-keyboard="false" class="dropdown-item" data-toggle="modal"
 								 data-target="#altaCliente">Alta Cliente</a>
-								<a href="#" class="dropdown-item">Buscar Cliente</a>
+								<a href="#" class="dropdown-item">Ver Agenda</a>
 							</div>
 						</li>
 					</ul>
@@ -54,6 +54,27 @@
 
 		</header>
 		<section id="index">
+			<div>
+				<div class="card">
+					<div class="card-title">
+						<strong>AGENDA DE CLIENTES</strong>
+					</div>
+					<div class="card-body">
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th scope="col">Nombre</th>
+									<th scope="col">Apellido</th>
+									<th scope="col">Documento</th>
+									<th scope="col">Acción</th>
+								</tr>
+							</thead>
+							<tbody id="bodyAgenda">
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
 		</section>
 	</div>
 
@@ -82,23 +103,23 @@
 
 						<div class="form-group">
 							<label for="txtDocumento">Documento</label>
-							<input type="text" class="form-control" id="txtDocumento"  placeholder="Ingrese documento">
+							<input type="text" class="form-control" id="txtDocumento" placeholder="Ingrese documento">
 							<small id="eDocumento" class="error">Ingreso invalido. 1 a 9 caracteres. Solo numeros.</small>
 							<small class="form-text text-muted">No obligatorio.</small>
 						</div>
 						<div class="form-group">
 							<label for="txtTelefono">Telefono</label>
-							<input type="text" class="form-control" id="txtTelefono"  placeholder="Ingrese telefono">
+							<input type="text" class="form-control" id="txtTelefono" placeholder="Ingrese telefono">
 							<small id="eTelefono" class="error">Ingreso invalido. 1 a 25 caracteres.</small>
 						</div>
 						<div class="form-group">
 							<label for="txtDireccion">Direccion</label>
-							<input type="text" class="form-control" id="txtDireccion"  placeholder="Ingrese direccion">
+							<input type="text" class="form-control" id="txtDireccion" placeholder="Ingrese direccion">
 							<small id="eDireccion" class="error">Ingreso invalido. 1 a 40 caracteres.</small>
 						</div>
 						<div class="form-group">
 							<label for="txtEmail">Email</label>
-							<input type="text" class="form-control" id="txtEmail"  placeholder="Ingrese email">
+							<input type="text" class="form-control" id="txtEmail" placeholder="Ingrese email">
 							<small id="eEmail" class="error">Ingreso invalido. Formato incorrecto (ej. nombre@dominio.com)</small>
 							<small class="form-text text-muted">No obligatorio.</small>
 						</div>

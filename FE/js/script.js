@@ -76,8 +76,30 @@ function validarAltaCliente() {
     }
 }
 function altaCliente() {
-    alert("Todo OK!");
-    $("#btnCerrarAltaCliente").click();
+    var nombre = $('#txtNombre').val();
+    var apellido = $('#txtApellido').val();
+    var documento = $('#txtDocumento').val();
+    var telefono = $('#txtTelefono').val();
+    var direccion = $('#txtDireccion').val();
+    var email = $('#txtEmail').val();
+    var cliente = {
+        "nombre": nombre,
+        "apellido": apellido,
+        "documento": documento,
+        "telefono": telefono,
+        "direccion": direccion,
+        "email": email
+    };
+    $.ajax({
+        data: cliente,
+        type: "post",
+        url: "http://localhost/workspace/fEnv/public/nuevocliente",
+        success: function (response) {
+            alert(response.ok);
+            $("#btnCerrarAltaCliente").click();
+        }
+    });
+    //alert("Todo OK!");
     //cerrarAltaCliente();
 }
 function cerrarAltaCliente() {
@@ -108,4 +130,7 @@ function restablecerAltaCliente() {
     $("#txtEmail").removeClass();
     $("#txtEmail").addClass('form-control');
     $("#eEmail").hide();
+}
+function agendaTemplate() {
+    var html = "";
 }
