@@ -13,7 +13,7 @@ function validarAltaCliente() {
 
     restablecerAltaCliente();
     //Reglas de validacion
-    let regNombreApellido = new RegExp("^[a-zA-ZÑñáéíóúÁÉÍÓÚäëïöüÄËÏÖÜàèìòùÀÈÌÒÙ\s]{1,20}$");
+    let regNombreApellido = new RegExp("^[a-zA-ZÑñáéíóúÁÉÍÓÚäëïöüÄËÏÖÜàèìòùÀÈÌÒÙ \s]{1,20}$");
     let regDocumento = new RegExp("^\\d{0,9}$");
     //let regTelefono = new RegExp("^(?:(?:00)?549?)?0?(?:11|[2368]\d)(?:(?=\d{0,2}15)\d{2})??\d{8}$");
     let regEmail = new RegExp("^[0-9a-z_\\-\\.]+@[0-9a-z\\-\\.]+\\.[a-z]{2,4}$");
@@ -128,7 +128,7 @@ function cerrarAltaCliente() {
     $("#txtNombre").val("");
     $("#txtApellido").val("");
     $("#txtDocumento").val("");
-    $("#txtTelefono").val("");
+    $("#txtTelefono").val("");Maria 
     $("#txtDireccion").val("");
     $("#txtEmail").val("");
 
@@ -213,6 +213,7 @@ function vistaCliente(id:number){
             <li class="list-group-item"><label><strong>Apellido:&nbsp</strong></label>`+response[0].apellido+`</li>
             <li class="list-group-item"><label><strong>Documento:&nbsp</strong></label>`+response[0].documento+`</li>
             <li class="list-group-item"><label><strong>Telefono:&nbsp</strong></label>`+response[0].telefono+`</li>
+            <li class="list-group-item"><label><strong>Direccion:&nbsp</strong></label>`+response[0].direccion+`</li>
             <li class="list-group-item"><label><strong>Email:&nbsp</strong></label>`+response[0].email+`</li>
           </ul>`;
           $("#vistaClienteBody").html(html);
@@ -230,6 +231,17 @@ function vistaCliente(id:number){
     });
 }
 
+function modificarCliente(cliente:any){
+    let html = `<ul class="list-group list-group-flush">
+    <li class="list-group-item"><label><strong>Nombre:&nbsp</strong></label><input type="text" id="txtMNombre"></li>
+    <li class="list-group-item"><label><strong>Apellido:&nbsp</strong></label><input type="text" id="txtMApellido"></li>
+    <li class="list-group-item"><label><strong>Documento:&nbsp</strong></label><input type="text" id="txtMDocumento"></li>
+    <li class="list-group-item"><label><strong>Telefono:&nbsp</strong></label><input type="text" id="txtMTelefono"></li>
+    <li class="list-group-item"><label><strong>Direccion:&nbsp</strong></label><input type="text" id="txtMDireccion"></li>
+    <li class="list-group-item"><label><strong>Email:&nbsp</strong></label><input type="text" id="txtMEmail"></li>
+  </ul>`;
+}
+
 function bajaCliente(id:number){
     let cliente = {id:id};
     $.ajax({
@@ -242,6 +254,7 @@ function bajaCliente(id:number){
         success : function(response){
             $("#btnCerrarBajaCliente").click();
             $("#btnCerrarVistaCliente").click();
+            agendaTemplate();
         } 
     });
 }

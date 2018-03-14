@@ -10,7 +10,7 @@ $(document).ready(function () {
 function validarAltaCliente() {
     restablecerAltaCliente();
     //Reglas de validacion
-    var regNombreApellido = new RegExp("^[a-zA-ZÑñáéíóúÁÉÍÓÚäëïöüÄËÏÖÜàèìòùÀÈÌÒÙ\s]{1,20}$");
+    var regNombreApellido = new RegExp("^[a-zA-ZÑñáéíóúÁÉÍÓÚäëïöüÄËÏÖÜàèìòùÀÈÌÒÙ \s]{1,20}$");
     var regDocumento = new RegExp("^\\d{0,9}$");
     //let regTelefono = new RegExp("^(?:(?:00)?549?)?0?(?:11|[2368]\d)(?:(?=\d{0,2}15)\d{2})??\d{8}$");
     var regEmail = new RegExp("^[0-9a-z_\\-\\.]+@[0-9a-z\\-\\.]+\\.[a-z]{2,4}$");
@@ -111,6 +111,7 @@ function cerrarAltaCliente() {
     $("#txtApellido").val("");
     $("#txtDocumento").val("");
     $("#txtTelefono").val("");
+    Maria;
     $("#txtDireccion").val("");
     $("#txtEmail").val("");
 }
@@ -158,7 +159,7 @@ function vistaCliente(id) {
         type: "get",
         url: "http://localhost/workspace/fEnv/public/operativas/clienteid?id=" + id,
         success: function (response) {
-            var html = "<ul class=\"list-group list-group-flush\">\n            <li class=\"list-group-item\"><label><strong>Nombre:&nbsp</strong></label>" + response[0].nombre + "</li>\n            <li class=\"list-group-item\"><label><strong>Apellido:&nbsp</strong></label>" + response[0].apellido + "</li>\n            <li class=\"list-group-item\"><label><strong>Documento:&nbsp</strong></label>" + response[0].documento + "</li>\n            <li class=\"list-group-item\"><label><strong>Telefono:&nbsp</strong></label>" + response[0].telefono + "</li>\n            <li class=\"list-group-item\"><label><strong>Email:&nbsp</strong></label>" + response[0].email + "</li>\n          </ul>";
+            var html = "<ul class=\"list-group list-group-flush\">\n            <li class=\"list-group-item\"><label><strong>Nombre:&nbsp</strong></label>" + response[0].nombre + "</li>\n            <li class=\"list-group-item\"><label><strong>Apellido:&nbsp</strong></label>" + response[0].apellido + "</li>\n            <li class=\"list-group-item\"><label><strong>Documento:&nbsp</strong></label>" + response[0].documento + "</li>\n            <li class=\"list-group-item\"><label><strong>Telefono:&nbsp</strong></label>" + response[0].telefono + "</li>\n            <li class=\"list-group-item\"><label><strong>Direccion:&nbsp</strong></label>" + response[0].direccion + "</li>\n            <li class=\"list-group-item\"><label><strong>Email:&nbsp</strong></label>" + response[0].email + "</li>\n          </ul>";
             $("#vistaClienteBody").html(html);
             var htmlConfirmaBaja = "<h5>\u00BFEst\u00E1 seguro?</h5>\n            <br>\n            <button class=\"btn btn-danger\" onclick='bajaCliente(" + response[0].id + ")'>Si</button>\n            <button class=\"btn btn-secondary\" data-dismiss=\"modal\">No</button>";
             $("#bodyBajaCliente").html(htmlConfirmaBaja);
@@ -167,6 +168,9 @@ function vistaCliente(id) {
             alert(response.statusText);
         }
     });
+}
+function modificarCliente(cliente) {
+    var html = "<ul class=\"list-group list-group-flush\">\n    <li class=\"list-group-item\"><label><strong>Nombre:&nbsp</strong></label><input type=\"text\" id=\"txtMNombre\"></li>\n    <li class=\"list-group-item\"><label><strong>Apellido:&nbsp</strong></label><input type=\"text\" id=\"txtMApellido\"></li>\n    <li class=\"list-group-item\"><label><strong>Documento:&nbsp</strong></label><input type=\"text\" id=\"txtMDocumento\"></li>\n    <li class=\"list-group-item\"><label><strong>Telefono:&nbsp</strong></label><input type=\"text\" id=\"txtMTelefono\"></li>\n    <li class=\"list-group-item\"><label><strong>Direccion:&nbsp</strong></label><input type=\"text\" id=\"txtMDireccion\"></li>\n    <li class=\"list-group-item\"><label><strong>Email:&nbsp</strong></label><input type=\"text\" id=\"txtMEmail\"></li>\n  </ul>";
 }
 function bajaCliente(id) {
     var cliente = { id: id };
@@ -180,6 +184,7 @@ function bajaCliente(id) {
         success: function (response) {
             $("#btnCerrarBajaCliente").click();
             $("#btnCerrarVistaCliente").click();
+            agendaTemplate();
         }
     });
 }
