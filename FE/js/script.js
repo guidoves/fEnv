@@ -160,6 +160,8 @@ function vistaCliente(id) {
         success: function (response) {
             var html = "<div><label for=\"\">Nombre:&nbsp</label>" + response[0].nombre + "</div><br>\n            <div><label for=\"\">Apellido:&nbsp</label>" + response[0].apellido + "</div><br>\n            <div><label for=\"\">Documento:&nbsp</label>" + response[0].documento + "</div><br>\n            <div><label for=\"\">Telefono:&nbsp</label>" + response[0].telefono + "</div><br>\n            <div><label for=\"\">Direccion:&nbsp</label>" + response[0].direccion + "</div><br>\n            <div><label for=\"\">Email:&nbsp</label>" + response[0].email + "</div><br>";
             $("#vistaClienteBody").html(html);
+            var htmlConfirmaBaja = "<h5>\u00BFEst\u00E1 seguro?</h5>\n            <br>\n            <button class=\"btn btn-danger\" onclick='bajaCliente(" + response[0].id + ")'>SI</button>\n            <button class=\"btn btn-secondary\" data-dismiss=\"modal\">NO</button>";
+            $("#bodyBajaCliente").html(htmlConfirmaBaja);
         },
         error: function (response) {
             alert(response.statusText);
@@ -167,4 +169,13 @@ function vistaCliente(id) {
     });
 }
 function bajaCliente(id) {
+    var cliente = { id: id };
+    $.ajax({
+        data: cliente,
+        type: "post",
+        url: "http://localhost/workspace/fEnv/public/bajacliente",
+        error: function (response) {
+            alert(response.statusText);
+        }
+    });
 }

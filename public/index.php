@@ -34,7 +34,7 @@ $app->get('/hello/{name}', function (Request $request, Response $response) {
 
 //General
 $app->post('/nuevocliente', \EmpleadoController::class . ':AltaCliente')->add(\Cors::class . ':HabilitarCORSTodos');
-
+$app->post('/bajacliente', \EmpleadoController::class . ':BajaCliente')->add(\Cors::class . ':HabilitarCORSTodos');
 //Operativas
 $app->get('/operativas/clientesordenados', \Operativas::class . ':traerClientesOrdenados')->add(\Cors::class . ':HabilitarCORSTodos');
 $app->get('/operativas/clienteid', \Operativas::class . ':traerCliente')->add(\Cors::class . ':HabilitarCORSTodos');

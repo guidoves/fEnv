@@ -48,9 +48,8 @@ class Clientes{
         
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
         $consulta =$objetoAccesoDato->RetornarConsulta("
-        UPDATE
-        set estado=:estado 
-        from clientes 				
+        UPDATE clientes
+        set estado=:estado 			
         WHERE id=:id");
         $consulta->bindValue(':estado','BAJA',PDO::PARAM_STR);	
         $consulta->bindValue(':id',$id, PDO::PARAM_INT);		

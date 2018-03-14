@@ -24,6 +24,21 @@ class EmpleadoController{
             return $response->withJson($respuesta,500);
         }
     }
+
+    public function BajaCliente($request,$response){
+        try{
+            
+            Clientes::bajaPorId($request->getParsedBody()["id"]);
+            $respuesta = new stdclass();
+            $respuesta->ok = "Cliente dado de baja";
+            return $response->withJson($respuesta,200);
+        }
+        catch(Exception $ex){
+            $respuesta = new stdclass();
+            $respuesta->error = $ex->getMessage();
+            return $response->withJson($respuesta,500);
+        }
+    }
 }
 
 

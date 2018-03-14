@@ -214,7 +214,13 @@ function vistaCliente(id:number){
             <div><label for="">Telefono:&nbsp</label>`+response[0].telefono+`</div><br>
             <div><label for="">Direccion:&nbsp</label>`+response[0].direccion+`</div><br>
             <div><label for="">Email:&nbsp</label>`+response[0].email+`</div><br>`;
-            $("#vistaClienteBody").html(html);  
+            $("#vistaClienteBody").html(html);
+            let htmlConfirmaBaja = `<h5>¿Está seguro?</h5>
+            <br>
+            <button class="btn btn-danger" onclick='bajaCliente(`+response[0].id+`)'>SI</button>
+            <button class="btn btn-secondary" data-dismiss="modal">NO</button>`;
+            $("#bodyBajaCliente").html(htmlConfirmaBaja);
+
         },      
         error: function (response){
             alert(response.statusText);
@@ -224,5 +230,13 @@ function vistaCliente(id:number){
 }
 
 function bajaCliente(id:number){
-    
+    let cliente = {id:id};
+    $.ajax({
+        data : cliente,
+        type : "post",
+        url: "http://localhost/workspace/fEnv/public/bajacliente",
+        error: function(response){
+            alert(response.statusText);
+        }
+    });
 }
