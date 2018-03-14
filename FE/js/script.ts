@@ -189,7 +189,7 @@ function agendaTemplate() {
             let body: string = "";
 
             for (let index = 0; index < response.length; index++) {
-                body += "<tr><td>" + response[index].apellido + "</td><td>" + response[index].nombre + "</td><td>" + response[index].documento + "</td><td><button class='btn btn-link' data-controls-modal='vistaCliente' data-backdrop='static' data-keyboard='false' class='dropdown-item' data-toggle='modal' data-target='#vistaCliente' onclick='vistaCliente("+response[index].id+")'>Ver</button></td></tr>";
+                body += "<tr><td>" + response[index].apellido + "</td><td>" + response[index].nombre + "</td><td>" + response[index].documento + "</td><td><button class='btn btn-info' data-controls-modal='vistaCliente' data-backdrop='static' data-keyboard='false' class='dropdown-item' data-toggle='modal' data-target='#vistaCliente' onclick='vistaCliente("+response[index].id+")'>Detalle</button></td></tr>";
 
             }
             $("#bodyAgenda").html(body);
@@ -208,17 +208,18 @@ function vistaCliente(id:number){
         type : "get",
         url : "http://localhost/workspace/fEnv/public/operativas/clienteid?id="+id,
         success: function(response){
-            let html = `<div><label for="">Nombre:&nbsp</label>`+response[0].nombre+`</div><br>
-            <div><label for="">Apellido:&nbsp</label>`+response[0].apellido+`</div><br>
-            <div><label for="">Documento:&nbsp</label>`+response[0].documento+`</div><br>
-            <div><label for="">Telefono:&nbsp</label>`+response[0].telefono+`</div><br>
-            <div><label for="">Direccion:&nbsp</label>`+response[0].direccion+`</div><br>
-            <div><label for="">Email:&nbsp</label>`+response[0].email+`</div><br>`;
-            $("#vistaClienteBody").html(html);
+            let html = `<ul class="list-group list-group-flush">
+            <li class="list-group-item"><label><strong>Nombre:&nbsp</strong></label>`+response[0].nombre+`</li>
+            <li class="list-group-item"><label><strong>Apellido:&nbsp</strong></label>`+response[0].apellido+`</li>
+            <li class="list-group-item"><label><strong>Documento:&nbsp</strong></label>`+response[0].documento+`</li>
+            <li class="list-group-item"><label><strong>Telefono:&nbsp</strong></label>`+response[0].telefono+`</li>
+            <li class="list-group-item"><label><strong>Email:&nbsp</strong></label>`+response[0].email+`</li>
+          </ul>`;
+          $("#vistaClienteBody").html(html);
             let htmlConfirmaBaja = `<h5>¿Está seguro?</h5>
             <br>
-            <button class="btn btn-danger" onclick='bajaCliente(`+response[0].id+`)'>SI</button>
-            <button class="btn btn-secondary" data-dismiss="modal">NO</button>`;
+            <button class="btn btn-danger" onclick='bajaCliente(`+response[0].id+`)'>Si</button>
+            <button class="btn btn-secondary" data-dismiss="modal">No</button>`;
             $("#bodyBajaCliente").html(htmlConfirmaBaja);
 
         },      
@@ -237,6 +238,10 @@ function bajaCliente(id:number){
         url: "http://localhost/workspace/fEnv/public/bajacliente",
         error: function(response){
             alert(response.statusText);
-        }
+        },
+        success : function(response){
+            $("#btnCerrarBajaCliente").click();
+            $("#btnCerrarVistaCliente").click();
+        } 
     });
 }
