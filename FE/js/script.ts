@@ -153,6 +153,7 @@ function altaCliente() {
         success: function (response) {
             alert(response.ok);
             $("#btnCerrarAltaCliente").click();
+            agendaTemplate();
         },
         error: function (response) {
             alert(response.statusText);
@@ -199,8 +200,21 @@ function agendaTemplate() {
     $("#index").html("<strong style='color : red'>No hay datos de clientes.</strong>");
     let template: string = `<div class="agenda">
     <div class="card">
-        <div class="card-title">
-            <strong>AGENDA DE CLIENTES</strong>
+        <div class="card-header">
+            <div class="card-title">
+                <div class="contenedor">
+                    <div class="elementoAgenda">
+                        <strong>AGENDA DE CLIENTES</strong>
+                    </div>
+                    <div class="elementoAgenda">
+                        <form class="form-inline my-2 my-lg-0">
+                            <input class="form-control mr-sm-2" type="search" placeholder="Ingrese telefono,nombre,apellido,documento">
+                            <button class="btn btn-outline-success my-2 my-sm-2" type="submit">Buscar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        
         </div>
         <div class="card-body">
             <table class="table table-striped">
@@ -309,11 +323,11 @@ function modificarCliente(id: number, nombre: string, apellido: string, document
     $("#txtMDireccion").val(direccion);
     $("#txtMEmail").val(email);
 
-    let footer = `<button class="btn btn-warning" onclick="validarModificarCliente(`+id+`)">Guardar</button><button class="btn btn-secondary" onclick="restablecerVista(`+id+`,'` + nombre + `','` + apellido + `','` + documento + `','` + telefono + `','` + direccion + `','` + email + `')">Vista</button>`;
+    let footer = `<button class="btn btn-warning" onclick="validarModificarCliente(` + id + `)">Guardar</button><button class="btn btn-secondary" onclick="restablecerVista(` + id + `,'` + nombre + `','` + apellido + `','` + documento + `','` + telefono + `','` + direccion + `','` + email + `')">Vista</button>`;
     $("#vistaClienteFooter").html(footer);
 }
 
-function validarModificarCliente(id:number) {
+function validarModificarCliente(id: number) {
     let cliente = {
         id: id,
         nombre: $("#txtMNombre").val(),
@@ -380,19 +394,19 @@ function validarModificarCliente(id:number) {
             data: cliente,
             type: "post",
             url: "http://localhost/workspace/fEnv/public/modificarcliente",
-            success:function(response){
+            success: function (response) {
                 alert(response.ok);
                 $("#btnCerrarVistaCliente").click();
                 agendaTemplate();
             },
-            error: function(response){
+            error: function (response) {
                 alert(response.statusText);
             }
         });
     }
 }
 
-function restablecerVista(id:number, nombre: string, apellido: string, documento: number, telefono: string, direccion: string, email: string) {
+function restablecerVista(id: number, nombre: string, apellido: string, documento: number, telefono: string, direccion: string, email: string) {
     let html = `<ul class="list-group list-group-flush">
     <li class="list-group-item"><label><strong>Nombre:&nbsp</strong></label>`+ nombre + `</li>
     <li class="list-group-item"><label><strong>Apellido:&nbsp</strong></label>`+ apellido + `</li>

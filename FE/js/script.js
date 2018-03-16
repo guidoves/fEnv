@@ -129,6 +129,7 @@ function altaCliente() {
         success: function (response) {
             alert(response.ok);
             $("#btnCerrarAltaCliente").click();
+            agendaTemplate();
         },
         error: function (response) {
             alert(response.statusText);
@@ -166,7 +167,7 @@ function restablecerAltaCliente() {
 }
 function agendaTemplate() {
     $("#index").html("<strong style='color : red'>No hay datos de clientes.</strong>");
-    var template = "<div class=\"agenda\">\n    <div class=\"card\">\n        <div class=\"card-title\">\n            <strong>AGENDA DE CLIENTES</strong>\n        </div>\n        <div class=\"card-body\">\n            <table class=\"table table-striped\">\n                <thead>\n                    <tr>\n                        <th scope=\"col\">Apellido</th>\n                        <th scope=\"col\">Nombre</th>\n                        <th scope=\"col\">Documento</th>\n                        <th scope=\"col\">Acci\u00F3n</th>\n                    </tr>\n                </thead>\n                <tbody id=\"bodyAgenda\">\n                </tbody>\n            </table>\n        </div>\n    </div>\n</div>";
+    var template = "<div class=\"agenda\">\n    <div class=\"card\">\n        <div class=\"card-header\">\n            <div class=\"card-title\">\n                <div class=\"contenedor\">\n                    <div class=\"elementoAgenda\">\n                        <strong>AGENDA DE CLIENTES</strong>\n                    </div>\n                    <div class=\"elementoAgenda\">\n                        <form class=\"form-inline my-2 my-lg-0\">\n                            <input class=\"form-control mr-sm-2\" type=\"search\" placeholder=\"Ingrese telefono,nombre,apellido,documento\">\n                            <button class=\"btn btn-outline-success my-2 my-sm-2\" type=\"submit\">Buscar</button>\n                        </form>\n                    </div>\n                </div>\n            </div>\n        \n        </div>\n        <div class=\"card-body\">\n            <table class=\"table table-striped\">\n                <thead>\n                    <tr>\n                        <th scope=\"col\">Apellido</th>\n                        <th scope=\"col\">Nombre</th>\n                        <th scope=\"col\">Documento</th>\n                        <th scope=\"col\">Acci\u00F3n</th>\n                    </tr>\n                </thead>\n                <tbody id=\"bodyAgenda\">\n                </tbody>\n            </table>\n        </div>\n    </div>\n</div>";
     $.ajax({
         type: "get",
         url: "http://localhost/workspace/fEnv/public/operativas/clientesordenados",

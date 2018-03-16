@@ -18,3 +18,14 @@
     background-color: whitesmoke;
     border-color : black;
 }
+
+.contenedor{
+    
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.elementoAgenda{
+    
+}
