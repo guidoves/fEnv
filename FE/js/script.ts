@@ -12,11 +12,6 @@ $(document).ready(function () {
 function validarAltaCliente() {
 
     restablecerAltaCliente();
-    //Reglas de validacion
-    let regNombreApellido = new RegExp("^[a-zA-ZÑñáéíóúÁÉÍÓÚäëïöüÄËÏÖÜàèìòùÀÈÌÒÙ \s]{1,20}$");
-    let regDocumento = new RegExp("^\\d{0,9}$");
-    //let regTelefono = new RegExp("^(?:(?:00)?549?)?0?(?:11|[2368]\d)(?:(?=\d{0,2}15)\d{2})??\d{8}$");
-    let regEmail = new RegExp("^[0-9a-z_\\-\\.]+@[0-9a-z\\-\\.]+\\.[a-z]{2,4}$");
 
     //Valores del formulario
     let nombre: string = String($("#txtNombre").val());
@@ -26,66 +21,112 @@ function validarAltaCliente() {
     let direccion: string = String($("#txtDireccion").val());
     let email: string = String($("#txtEmail").val());
 
-    let validacion: boolean = true;
+    let cliente = {
+        nombre: nombre,
+        apellido: apellido,
+        documento: documento,
+        telefono: telefono,
+        direccion: direccion,
+        email: email
+    };
+
+    let validaciones = validacion(cliente);
 
     //Validaciones
-    if (nombre.match(regNombreApellido) != null) {
+    if (validaciones.nombre) {
         $("#txtNombre").addClass("valido");
     }
     else {
         $("#txtNombre").addClass("invalido");
         $("#eNombre").show();
-        validacion = false;
     }
 
-    if (apellido.match(regNombreApellido) != null) {
+    if (validaciones.apellido) {
         $("#txtApellido").addClass("valido");
     }
     else {
         $("#txtApellido").addClass("invalido");
         $("#eApellido").show();
-        validacion = false;
     }
 
-    if (documento.match(regDocumento) != null) {
+    if (validaciones.documento) {
         $("#txtDocumento").addClass("valido");
     }
     else {
         $("#txtDocumento").addClass("invalido");
         $("#eDocumento").show();
-        validacion = false;
     }
 
-    if (telefono.length > 0 && telefono.length < 25) {
+    if (validaciones.telefono) {
         $("#txtTelefono").addClass("valido");
     }
     else {
         $("#txtTelefono").addClass("invalido");
         $("#eTelefono").show();
-        validacion = false;
     }
 
-    if (direccion.length > 0 && direccion.length < 50) {
+    if (validaciones.direccion) {
         $("#txtDireccion").addClass("valido");
     }
     else {
         $("#txtDireccion").addClass("invalido");
         $("#eDireccion").show();
-        validacion = false;
     }
 
-    if (email.match(regEmail) != null || email.length == 0) {
+    if (validaciones.email) {
         $("#txtEmail").addClass("valido");
     }
     else {
         $("#txtEmail").addClass("invalido");
         $("#eEmail").show();
-        validacion = false;
     }
 
-    if (validacion) {
+    if (validaciones.nombre == true && validaciones.apellido == true && validaciones.documento == true && validaciones.email == true && validaciones.telefono == true && validaciones.direccion == true) {
         altaCliente();
     }
+}
+
+function validacion(cliente: any) {
+
+    let validacion = {
+        nombre: true,
+        apellido: true,
+        documento: true,
+        telefono: true,
+        direccion: true,
+        email: true
+    };
+    //Reglas de validacion
+    let regNombreApellido = new RegExp("^[a-zA-ZÑñáéíóúÁÉÍÓÚäëïöüÄËÏÖÜàèìòùÀÈÌÒÙ \s]{1,20}$");
+    let regDocumento = new RegExp("^\\d{0,9}$");
+    //let regTelefono = new RegExp("^(?:(?:00)?549?)?0?(?:11|[2368]\d)(?:(?=\d{0,2}15)\d{2})??\d{8}$");
+    let regEmail = new RegExp("^[0-9a-z_\\-\\.]+@[0-9a-z\\-\\.]+\\.[a-z]{2,4}$");
+
+    //Validaciones
+    if (cliente.nombre.match(regNombreApellido) == null) {
+        validacion.nombre = false;
+    }
+
+    if (cliente.apellido.match(regNombreApellido) == null) {
+        validacion.apellido = false;
+    }
+
+    if (cliente.documento.match(regDocumento) == null) {
+        validacion.documento = false;
+    }
+
+    if (cliente.telefono.length == 0 || cliente.telefono.length > 25) {
+        validacion.telefono = false;
+    }
+
+    if (cliente.direccion.length == 0 || cliente.direccion.length > 50) {
+        validacion.direccion = false;
+    }
+
+    if (cliente.email.match(regEmail) == null && cliente.email.length > 0) {
+        validacion.email = false;
+    }
+    return validacion;
 }
 
 function altaCliente() {
@@ -118,9 +159,6 @@ function altaCliente() {
         }
 
     });
-
-    //alert("Todo OK!");
-    //cerrarAltaCliente();
 }
 
 function cerrarAltaCliente() {
@@ -128,7 +166,7 @@ function cerrarAltaCliente() {
     $("#txtNombre").val("");
     $("#txtApellido").val("");
     $("#txtDocumento").val("");
-    $("#txtTelefono").val("");Maria 
+    $("#txtTelefono").val("");
     $("#txtDireccion").val("");
     $("#txtEmail").val("");
 
@@ -189,7 +227,7 @@ function agendaTemplate() {
             let body: string = "";
 
             for (let index = 0; index < response.length; index++) {
-                body += "<tr><td>" + response[index].apellido + "</td><td>" + response[index].nombre + "</td><td>" + response[index].documento + "</td><td><button class='btn btn-info' data-controls-modal='vistaCliente' data-backdrop='static' data-keyboard='false' class='dropdown-item' data-toggle='modal' data-target='#vistaCliente' onclick='vistaCliente("+response[index].id+")'>Detalle</button></td></tr>";
+                body += "<tr><td>" + response[index].apellido + "</td><td>" + response[index].nombre + "</td><td>" + response[index].documento + "</td><td><button class='btn btn-info' data-controls-modal='vistaCliente' data-backdrop='static' data-keyboard='false' class='dropdown-item' data-toggle='modal' data-target='#vistaCliente' onclick='vistaCliente(" + response[index].id + ")'>Detalle</button></td></tr>";
 
             }
             $("#bodyAgenda").html(body);
@@ -201,60 +239,187 @@ function agendaTemplate() {
     });
 }
 
-function vistaCliente(id:number){
-    
+function vistaCliente(id: number) {
+
 
     $.ajax({
-        type : "get",
-        url : "http://localhost/workspace/fEnv/public/operativas/clienteid?id="+id,
-        success: function(response){
+        type: "get",
+        url: "http://localhost/workspace/fEnv/public/operativas/clienteid?id=" + id,
+        success: function (response) {
+            let cliente = {
+                id: response[0].id,
+                nombre: response[0].nombre,
+                apellido: response[0].apellido,
+                documento: response[0].documento,
+                telefono: response[0].telefono,
+                direccion: response[0].direccion,
+                email: response[0].email
+            };
             let html = `<ul class="list-group list-group-flush">
-            <li class="list-group-item"><label><strong>Nombre:&nbsp</strong></label>`+response[0].nombre+`</li>
-            <li class="list-group-item"><label><strong>Apellido:&nbsp</strong></label>`+response[0].apellido+`</li>
-            <li class="list-group-item"><label><strong>Documento:&nbsp</strong></label>`+response[0].documento+`</li>
-            <li class="list-group-item"><label><strong>Telefono:&nbsp</strong></label>`+response[0].telefono+`</li>
-            <li class="list-group-item"><label><strong>Direccion:&nbsp</strong></label>`+response[0].direccion+`</li>
-            <li class="list-group-item"><label><strong>Email:&nbsp</strong></label>`+response[0].email+`</li>
+            <li class="list-group-item"><label><strong>Nombre:&nbsp</strong></label>`+ cliente.nombre + `</li>
+            <li class="list-group-item"><label><strong>Apellido:&nbsp</strong></label>`+ cliente.apellido + `</li>
+            <li class="list-group-item"><label><strong>Documento:&nbsp</strong></label>`+ cliente.documento + `</li>
+            <li class="list-group-item"><label><strong>Telefono:&nbsp</strong></label>`+ cliente.telefono + `</li>
+            <li class="list-group-item"><label><strong>Direccion:&nbsp</strong></label>`+ cliente.direccion + `</li>
+            <li class="list-group-item"><label><strong>Email:&nbsp</strong></label>`+ cliente.email + `</li>
           </ul>`;
-          $("#vistaClienteBody").html(html);
+            $("#vistaClienteBody").html(html);
             let htmlConfirmaBaja = `<h5>¿Está seguro?</h5>
             <br>
-            <button class="btn btn-danger" onclick='bajaCliente(`+response[0].id+`)'>Si</button>
+            <button class="btn btn-danger" onclick='bajaCliente(`+ cliente.id + `)'>Si</button>
             <button class="btn btn-secondary" data-dismiss="modal">No</button>`;
             $("#bodyBajaCliente").html(htmlConfirmaBaja);
+            $("#vistaClienteFooter").html(`<button onclick="modificarCliente(` + cliente.id + `,'` + cliente.nombre + `','` + cliente.apellido + `','` + cliente.documento + `','` + cliente.telefono + `','` + cliente.direccion + `','` + cliente.email + `')" class="btn btn-warning">Modificar</button>
+            <button class="btn btn-danger" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="dropdown-item" data-target="#bajaCliente">Eliminar</button>`);
 
-        },      
-        error: function (response){
+        },
+        error: function (response) {
             alert(response.statusText);
         }
 
     });
 }
 
-function modificarCliente(cliente:any){
+function modificarCliente(id: number, nombre: string, apellido: string, documento: number, telefono: string, direccion: string, email: string) {
     let html = `<ul class="list-group list-group-flush">
-    <li class="list-group-item"><label><strong>Nombre:&nbsp</strong></label><input type="text" id="txtMNombre"></li>
-    <li class="list-group-item"><label><strong>Apellido:&nbsp</strong></label><input type="text" id="txtMApellido"></li>
-    <li class="list-group-item"><label><strong>Documento:&nbsp</strong></label><input type="text" id="txtMDocumento"></li>
-    <li class="list-group-item"><label><strong>Telefono:&nbsp</strong></label><input type="text" id="txtMTelefono"></li>
-    <li class="list-group-item"><label><strong>Direccion:&nbsp</strong></label><input type="text" id="txtMDireccion"></li>
-    <li class="list-group-item"><label><strong>Email:&nbsp</strong></label><input type="text" id="txtMEmail"></li>
-  </ul>`;
+    <li class="list-group-item"><label><strong>Nombre:&nbsp</strong></label><input class="form-control" type="text" id="txtMNombre"></li>
+    <small id="eMNombre" class="error">Ingreso invalido. 1 a 20 caracteres. Solo letras.</small>
+    <li class="list-group-item"><label><strong>Apellido:&nbsp</strong></label><input class="form-control" type="text" id="txtMApellido"></li>
+    <small id="eMApellido" class="error">Ingreso invalido. 1 a 20 caracteres. Solo letras.</small>
+    <li class="list-group-item"><label><strong>Documento:&nbsp</strong></label><input class="form-control" type="text" id="txtMDocumento"></li>
+    <small id="eMDocumento" class="error">Ingreso invalido. 1 a 9 caracteres. Solo numeros.</small>
+    <li class="list-group-item"><label><strong>Telefono:&nbsp</strong></label><input class="form-control" type="text" id="txtMTelefono"></li>
+    <small id="eMTelefono" class="error">Ingreso invalido. 1 a 25 caracteres.</small>
+    <li class="list-group-item"><label><strong>Direccion:&nbsp</strong></label><input class="form-control" type="text" id="txtMDireccion"></li>
+    <small id="eMDireccion" class="error">Ingreso invalido. 1 a 40 caracteres.</small>
+    <li class="list-group-item"><label><strong>Email:&nbsp</strong></label><input class="form-control" type="text" id="txtMEmail"></li>
+    <small id="eMEmail" class="error">Ingreso invalido. Formato incorrecto (ej. nombre@dominio.com)</small>  
+    </ul>`;
+    $("#vistaClienteBody").html(html);
+    $("#eMNombre").hide();
+    $("#eMApellido").hide();
+    $("#eMDocumento").hide();
+    $("#eMTelefono").hide();
+    $("#eMDireccion").hide();
+    $("#eMEmail").hide();
+    $("#txtMNombre").val(nombre);
+    $("#txtMApellido").val(apellido);
+    $("#txtMDocumento").val(documento);
+    $("#txtMTelefono").val(telefono);
+    $("#txtMDireccion").val(direccion);
+    $("#txtMEmail").val(email);
+
+    let footer = `<button class="btn btn-warning" onclick="validarModificarCliente(`+id+`)">Guardar</button><button class="btn btn-secondary" onclick="restablecerVista(`+id+`,'` + nombre + `','` + apellido + `','` + documento + `','` + telefono + `','` + direccion + `','` + email + `')">Vista</button>`;
+    $("#vistaClienteFooter").html(footer);
 }
 
-function bajaCliente(id:number){
-    let cliente = {id:id};
+function validarModificarCliente(id:number) {
+    let cliente = {
+        id: id,
+        nombre: $("#txtMNombre").val(),
+        apellido: $("#txtMApellido").val(),
+        documento: $("#txtMDocumento").val(),
+        telefono: $("#txtMTelefono").val(),
+        direccion: $("#txtMDireccion").val(),
+        email: $("#txtMEmail").val()
+    };
+
+    let validaciones = validacion(cliente);
+
+    //Validaciones
+    if (validaciones.nombre) {
+        $("#txtMNombre").addClass("valido");
+    }
+    else {
+        $("#txtMNombre").addClass("invalido");
+        $("#eMNombre").show();
+    }
+
+    if (validaciones.apellido) {
+        $("#txtMApellido").addClass("valido");
+    }
+    else {
+        $("#txtMApellido").addClass("invalido");
+        $("#eMApellido").show();
+    }
+
+    if (validaciones.documento) {
+        $("#txtMDocumento").addClass("valido");
+    }
+    else {
+        $("#txtMDocumento").addClass("invalido");
+        $("#eMDocumento").show();
+    }
+
+    if (validaciones.telefono) {
+        $("#txtMTelefono").addClass("valido");
+    }
+    else {
+        $("#txtMTelefono").addClass("invalido");
+        $("#eMTelefono").show();
+    }
+
+    if (validaciones.direccion) {
+        $("#txtMDireccion").addClass("valido");
+    }
+    else {
+        $("#txtMDireccion").addClass("invalido");
+        $("#eMDireccion").show();
+    }
+
+    if (validaciones.email) {
+        $("#txtMEmail").addClass("valido");
+    }
+    else {
+        $("#txtMEmail").addClass("invalido");
+        $("#eMEmail").show();
+    }
+
+    if (validaciones.nombre == true && validaciones.apellido == true && validaciones.documento == true && validaciones.email == true && validaciones.telefono == true && validaciones.direccion == true) {
+        $.ajax({
+            data: cliente,
+            type: "post",
+            url: "http://localhost/workspace/fEnv/public/modificarcliente",
+            success:function(response){
+                alert(response.ok);
+                $("#btnCerrarVistaCliente").click();
+                agendaTemplate();
+            },
+            error: function(response){
+                alert(response.statusText);
+            }
+        });
+    }
+}
+
+function restablecerVista(id:number, nombre: string, apellido: string, documento: number, telefono: string, direccion: string, email: string) {
+    let html = `<ul class="list-group list-group-flush">
+    <li class="list-group-item"><label><strong>Nombre:&nbsp</strong></label>`+ nombre + `</li>
+    <li class="list-group-item"><label><strong>Apellido:&nbsp</strong></label>`+ apellido + `</li>
+    <li class="list-group-item"><label><strong>Documento:&nbsp</strong></label>`+ documento + `</li>
+    <li class="list-group-item"><label><strong>Telefono:&nbsp</strong></label>`+ telefono + `</li>
+    <li class="list-group-item"><label><strong>Direccion:&nbsp</strong></label>`+ direccion + `</li>
+    <li class="list-group-item"><label><strong>Email:&nbsp</strong></label>`+ email + `</li>
+  </ul>`;
+    let footer = `<button onclick="modificarCliente(` + id + `,'` + nombre + `','` + apellido + `','` + documento + `','` + telefono + `','` + direccion + `','` + email + `')" class="btn btn-warning">Modificar</button>
+    <button class="btn btn-danger" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="dropdown-item" data-target="#bajaCliente">Eliminar</button>`;
+    $("#vistaClienteBody").html(html);
+    $("#vistaClienteFooter").html(footer);
+}
+
+function bajaCliente(id: number) {
+    let cliente = { id: id };
     $.ajax({
-        data : cliente,
-        type : "post",
+        data: cliente,
+        type: "post",
         url: "http://localhost/workspace/fEnv/public/bajacliente",
-        error: function(response){
+        error: function (response) {
             alert(response.statusText);
         },
-        success : function(response){
+        success: function (response) {
             $("#btnCerrarBajaCliente").click();
             $("#btnCerrarVistaCliente").click();
             agendaTemplate();
-        } 
+        }
     });
 }
