@@ -126,13 +126,19 @@ function altaCliente() {
         data: cliente,
         type: "post",
         url: "http://localhost/workspace/fEnv/public/nuevocliente",
-        success: function (response) {
+        success: function (response, status) {
+            console.log(status.toString());
             alert(response.ok);
             $("#btnCerrarAltaCliente").click();
             agendaTemplate();
         },
-        error: function (response) {
+        /*error: function (response) {
             alert(response.statusText);
+        },*/
+        statusCode: {
+            202: function () {
+                alert("jaja");
+            }
         }
     });
 }
@@ -167,7 +173,7 @@ function restablecerAltaCliente() {
 }
 function agendaTemplate() {
     $("#index").html("<strong style='color : red'>No hay datos de clientes.</strong>");
-    var template = "<div class=\"agenda\">\n    <div class=\"card\">\n        <div class=\"card-header\">\n            <div class=\"card-title\">\n                <div class=\"contenedor\">\n                    <div class=\"elementoAgenda\">\n                        <strong>AGENDA DE CLIENTES</strong>\n                    </div>\n                    <div class=\"elementoAgenda\">\n                        <form class=\"form-inline my-2 my-lg-0\">\n                            <input class=\"form-control mr-sm-2\" type=\"search\" placeholder=\"Ingrese telefono,nombre,apellido,documento\">\n                            <button class=\"btn btn-outline-success my-2 my-sm-2\" type=\"submit\">Buscar</button>\n                        </form>\n                    </div>\n                </div>\n            </div>\n        \n        </div>\n        <div class=\"card-body\">\n            <table class=\"table table-striped\">\n                <thead>\n                    <tr>\n                        <th scope=\"col\">Apellido</th>\n                        <th scope=\"col\">Nombre</th>\n                        <th scope=\"col\">Documento</th>\n                        <th scope=\"col\">Acci\u00F3n</th>\n                    </tr>\n                </thead>\n                <tbody id=\"bodyAgenda\">\n                </tbody>\n            </table>\n        </div>\n    </div>\n</div>";
+    var template = "<div class=\"agenda\">\n    <div class=\"card\">\n        <div class=\"card-header\">\n            <div class=\"card-title\">\n                <div class=\"contenedor\">\n                    <div class=\"elementoAgenda\">\n                        <strong>AGENDA DE CLIENTES</strong>\n                    </div>\n                    <div class=\"elementoAgenda\">\n                        <form class=\"form-inline my-2 my-lg-0\">\n                            <input id=\"txtBuscarCliente\" class=\"form-control mr-sm-2\" type=\"search\" placeholder=\"Ingrese dato..\">\n                            <button id=\"btnBuscarCliente\" class=\"btn btn-outline-success my-2 my-sm-2\" type=\"submit\">Buscar Cliente</button>\n                        </form>\n                    </div>\n                </div>\n            </div>\n        \n        </div>\n        <div class=\"card-body\">\n            <table class=\"table table-striped\">\n                <thead>\n                    <tr>\n                        <th scope=\"col\">Apellido</th>\n                        <th scope=\"col\">Nombre</th>\n                        <th scope=\"col\">Documento</th>\n                        <th scope=\"col\">Acci\u00F3n</th>\n                    </tr>\n                </thead>\n                <tbody id=\"bodyAgenda\">\n                </tbody>\n            </table>\n        </div>\n    </div>\n</div>";
     $.ajax({
         type: "get",
         url: "http://localhost/workspace/fEnv/public/operativas/clientesordenados",
@@ -178,11 +184,30 @@ function agendaTemplate() {
                 body += "<tr><td>" + response[index].apellido + "</td><td>" + response[index].nombre + "</td><td>" + response[index].documento + "</td><td><button class='btn btn-info' data-controls-modal='vistaCliente' data-backdrop='static' data-keyboard='false' class='dropdown-item' data-toggle='modal' data-target='#vistaCliente' onclick='vistaCliente(" + response[index].id + ")'>Detalle</button></td></tr>";
             }
             $("#bodyAgenda").html(body);
+            $("#btnBuscarCliente").on("click", function () {
+                buscarCliente(response);
+            });
         },
         error: function (response) {
             alert(response.statusText);
         }
     });
+}
+function buscarCliente(clientes) {
+    var valor = String($("#txtBuscarCliente").val());
+    var resultado = clientes.filter(function (cliente) {
+        return cliente.nombre == valor || cliente.apellido == valor || cliente.documento == valor || cliente.telefono == valor || cliente.email == valor;
+    });
+    var html = "";
+    if (resultado.length != 0) {
+        for (var index = 0; index < resultado.length; index++) {
+            html += "<tr><td>" + resultado[index].apellido + "</td><td>" + resultado[index].nombre + "</td><td>" + resultado[index].documento + "</td><td><button class='btn btn-info' data-controls-modal='vistaCliente' data-backdrop='static' data-keyboard='false' class='dropdown-item' data-toggle='modal' data-target='#vistaCliente' onclick='vistaCliente(" + resultado[index].id + ")'>Detalle</button></td></tr>";
+        }
+    }
+    else {
+        html = "<strong style='color : red'>No hay datos de clientes.</strong>";
+    }
+    $("#bodyAgenda").html(html);
 }
 function vistaCliente(id) {
     $.ajax({

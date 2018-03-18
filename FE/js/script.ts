@@ -150,13 +150,19 @@ function altaCliente() {
         data: cliente,
         type: "post",
         url: "http://localhost/workspace/fEnv/public/nuevocliente",
-        success: function (response) {
+        success: function (response,status) {
+            console.log(status.toString());
             alert(response.ok);
             $("#btnCerrarAltaCliente").click();
             agendaTemplate();
         },
-        error: function (response) {
+        /*error: function (response) {
             alert(response.statusText);
+        },*/  
+        statusCode : {
+            202: function(){
+                alert("jaja");
+            }
         }
 
     });
@@ -208,8 +214,8 @@ function agendaTemplate() {
                     </div>
                     <div class="elementoAgenda">
                         <form class="form-inline my-2 my-lg-0">
-                            <input class="form-control mr-sm-2" type="search" placeholder="Ingrese telefono,nombre,apellido,documento">
-                            <button class="btn btn-outline-success my-2 my-sm-2" type="submit">Buscar</button>
+                            <input id="txtBuscarCliente" class="form-control mr-sm-2" type="search" placeholder="Ingrese dato..">
+                            <button id="btnBuscarCliente" class="btn btn-outline-success my-2 my-sm-2" type="submit">Buscar Cliente</button>
                         </form>
                     </div>
                 </div>
@@ -246,12 +252,36 @@ function agendaTemplate() {
             }
             $("#bodyAgenda").html(body);
 
+            $("#btnBuscarCliente").on("click",function(){
+                buscarCliente(response);
+            });
+            
         },
         error: function (response) {
             alert(response.statusText);
         }
     });
 }
+function buscarCliente(clientes:any[]){
+    let valor:string = String($("#txtBuscarCliente").val());
+    
+    let resultado = clientes.filter(function(cliente){
+        return cliente.nombre == valor || cliente.apellido == valor || cliente.documento == valor || cliente.telefono == valor || cliente.email == valor; 
+    });
+    let html = "";
+    if(resultado.length != 0){
+
+        for (let index = 0; index < resultado.length; index++) {
+            html+= "<tr><td>" + resultado[index].apellido + "</td><td>" + resultado[index].nombre + "</td><td>" + resultado[index].documento + "</td><td><button class='btn btn-info' data-controls-modal='vistaCliente' data-backdrop='static' data-keyboard='false' class='dropdown-item' data-toggle='modal' data-target='#vistaCliente' onclick='vistaCliente(" + resultado[index].id + ")'>Detalle</button></td></tr>";
+            
+        }
+    }
+    else{
+        html = "<strong style='color : red'>No hay datos de clientes.</strong>";
+    }
+    $("#bodyAgenda").html(html);
+}
+
 
 function vistaCliente(id: number) {
 

@@ -8,7 +8,7 @@ require '../vendor/autoload.php';
 //MIDDLEWARE
 
 require_once '../mw/Cors.php';
-//require_once '../mw/MwValidaciones.php';
+require_once '../mw/MwValidaciones.php';
 
 //CONTROLLERS
 require_once '../controller/EmpleadoController.php';
@@ -33,7 +33,7 @@ $app->get('/hello/{name}', function (Request $request, Response $response) {
 });
 
 //General
-$app->post('/nuevocliente', \EmpleadoController::class . ':AltaCliente')->add(\Cors::class . ':HabilitarCORSTodos');
+$app->post('/nuevocliente', \EmpleadoController::class . ':AltaCliente')->add(\Cors::class . ':HabilitarCORSTodos')->add(\MWValidaciones::class . ':ValidarNuevoCliente');
 $app->post('/bajacliente', \EmpleadoController::class . ':BajaCliente')->add(\Cors::class . ':HabilitarCORSTodos');
 $app->post('/modificarcliente', \EmpleadoController::class . ':ModificarCliente')->add(\Cors::class . ':HabilitarCORSTodos');
 //Operativas

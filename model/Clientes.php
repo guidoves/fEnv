@@ -75,10 +75,28 @@ class Clientes{
 
     }
 
+    public static function buscarPorEmail($email){
+        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
+        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT id,nombre,apellido,documento,telefono,direccion,email FROM clientes WHERE email=:email AND estado=:estado");
+        $consulta->bindValue(":email",$email,PDO::PARAM_STR);
+        $consulta->bindValue(":estado","ACTIVO",PDO::PARAM_STR);
+        $consulta->execute();
+        return $consulta->fetchAll(PDO::FETCH_CLASS,"Clientes");
+    }
+
+    public static function buscarPorDocumento($documento){
+        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
+        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT id,nombre,apellido,documento,telefono,direccion,email FROM clientes WHERE documento=:documento AND estado=:estado");
+        $consulta->bindValue(":documento",$documento,PDO::PARAM_STR);
+        $consulta->bindValue(":estado","ACTIVO",PDO::PARAM_STR);
+        $consulta->execute();
+        return $consulta->fetchAll(PDO::FETCH_CLASS,"Clientes");
+    }
+
     public static function traerTodosOrdenadosPorNombre(){
 
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
-        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT id,nombre,apellido,documento from clientes WHERE estado=:estado ORDER BY apellido,nombre,documento");
+        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT id,nombre,apellido,documento,telefono,direccion,email from clientes WHERE estado=:estado ORDER BY apellido,nombre,documento");
         $consulta->bindValue(':estado','ACTIVO',PDO::PARAM_STR);
         $consulta->execute();
         return $consulta->fetchAll(PDO::FETCH_CLASS,"Clientes");
