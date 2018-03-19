@@ -146,7 +146,21 @@ function altaCliente() {
         "email": email
     };
 
-    $.ajax({
+    let xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function(){
+        if(xhr.readyState == 4){
+            if(xhr.status == 200){
+                alert(xhr.response.ok);
+                $("#btnCerrarAltaCliente").click();
+                agendaTemplate();
+            }
+        }
+    }
+    xhr.open("POST","http://localhost/workspace/fEnv/public/nuevocliente",true);
+    xhr.setRequestHeader("Content-type", "application/json");
+    xhr.send(cliente);
+    
+    /*$.ajax({
         data: cliente,
         type: "post",
         url: "http://localhost/workspace/fEnv/public/nuevocliente",
@@ -156,16 +170,17 @@ function altaCliente() {
             $("#btnCerrarAltaCliente").click();
             agendaTemplate();
         },
-        /*error: function (response) {
+        error: function (response) {
             alert(response.statusText);
-        },*/  
+        }, 
         statusCode : {
             202: function(){
                 alert("jaja");
             }
         }
 
-    });
+    })
+    */
 }
 
 function cerrarAltaCliente() {

@@ -114,9 +114,9 @@ class MwValidaciones{
             }
         }
         else{
-            $response->write('No se han especificado los campos requeridos');
-            $response->withStatus(400);
-            return $response;
+            $respuesta = new stdclass();
+            $respuesta->error = 'No se han especificado los campos requeridos';
+            return $response->withJson($respuesta,400);
         }
 
     }
