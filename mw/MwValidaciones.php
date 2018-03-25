@@ -5,7 +5,6 @@ require_once '../model/Clientes.php';
 class MwValidaciones{
 
     public function ValidarNuevoCliente($request,$response,$next){
-
         $errores = array();
         $dataOk = array();
         $reg_nombre_apellido = "/^[a-zA-ZÑñáéíóúÁÉÍÓÚäëïöüÄËÏÖÜàèìòùÀÈÌÒÙ \s]{1,20}$/";
@@ -121,8 +120,9 @@ class MwValidaciones{
 
     }
 
-
 }
+
+
 
 
 

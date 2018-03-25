@@ -145,42 +145,32 @@ function altaCliente() {
         "direccion": direccion,
         "email": email
     };
-
-    let xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function(){
-        if(xhr.readyState == 4){
-            if(xhr.status == 200){
-                alert(xhr.response.ok);
-                $("#btnCerrarAltaCliente").click();
-                agendaTemplate();
-            }
-        }
-    }
-    xhr.open("POST","http://localhost/workspace/fEnv/public/nuevocliente",true);
-    xhr.setRequestHeader("Content-type", "application/json");
-    xhr.send(cliente);
-    
-    /*$.ajax({
+    $.ajax({
         data: cliente,
         type: "post",
         url: "http://localhost/workspace/fEnv/public/nuevocliente",
-        success: function (response,status) {
-            console.log(status.toString());
-            alert(response.ok);
-            $("#btnCerrarAltaCliente").click();
-            agendaTemplate();
+        success: function (response, status, xhr) {
+            if (xhr.status == 200) {
+                console.log(response);
+                $("#btnCerrarAltaCliente").click();
+                agendaTemplate();
+            }
+            else if (xhr.status == 202) {
+                let mensaje = "";
+                if (response.email != null)
+                    mensaje += response.email + ". ";
+                if (response.documento != null)
+                    mensaje += response.documento;
+                alert(mensaje);
+            }
+
         },
         error: function (response) {
             alert(response.statusText);
-        }, 
-        statusCode : {
-            202: function(){
-                alert("jaja");
-            }
-        }
+        },
 
-    })
-    */
+    });
+
 }
 
 function cerrarAltaCliente() {
@@ -267,31 +257,32 @@ function agendaTemplate() {
             }
             $("#bodyAgenda").html(body);
 
-            $("#btnBuscarCliente").on("click",function(){
+            $("#btnBuscarCliente").on("click", function () {
                 buscarCliente(response);
             });
-            
+
         },
         error: function (response) {
             alert(response.statusText);
         }
     });
 }
-function buscarCliente(clientes:any[]){
-    let valor:string = String($("#txtBuscarCliente").val());
-    
-    let resultado = clientes.filter(function(cliente){
-        return cliente.nombre == valor || cliente.apellido == valor || cliente.documento == valor || cliente.telefono == valor || cliente.email == valor; 
+function buscarCliente(clientes: any[]) {
+    let valor: string = String($("#txtBuscarCliente").val());
+    valor = ucwords(valor.toLowerCase());
+
+    let resultado = clientes.filter(function (cliente) {
+        return cliente.nombre == valor || cliente.apellido == valor || cliente.documento == valor || cliente.telefono == valor || cliente.email == valor;
     });
     let html = "";
-    if(resultado.length != 0){
+    if (resultado.length != 0) {
 
         for (let index = 0; index < resultado.length; index++) {
-            html+= "<tr><td>" + resultado[index].apellido + "</td><td>" + resultado[index].nombre + "</td><td>" + resultado[index].documento + "</td><td><button class='btn btn-info' data-controls-modal='vistaCliente' data-backdrop='static' data-keyboard='false' class='dropdown-item' data-toggle='modal' data-target='#vistaCliente' onclick='vistaCliente(" + resultado[index].id + ")'>Detalle</button></td></tr>";
-            
+            html += "<tr><td>" + resultado[index].apellido + "</td><td>" + resultado[index].nombre + "</td><td>" + resultado[index].documento + "</td><td><button class='btn btn-info' data-controls-modal='vistaCliente' data-backdrop='static' data-keyboard='false' class='dropdown-item' data-toggle='modal' data-target='#vistaCliente' onclick='vistaCliente(" + resultado[index].id + ")'>Detalle</button></td></tr>";
+
         }
     }
-    else{
+    else {
         html = "<strong style='color : red'>No hay datos de clientes.</strong>";
     }
     $("#bodyAgenda").html(html);
@@ -314,6 +305,28 @@ function vistaCliente(id: number) {
                 direccion: response[0].direccion,
                 email: response[0].email
             };
+            let htm = `<table class="table table-sm">
+            <tbody>
+              <tr>
+                <td>Nombre: `+ cliente.nombre + `</td>
+              </tr>
+              <tr>
+              <td>Apellido: `+ cliente.apellido + `</td>
+              </tr>
+              <tr>
+              <td>Documento: `+ cliente.documento + `</td>
+              </tr>
+              <tr>
+              <td>Telefono: `+ cliente.telefono + `</td>
+              </tr>
+              <tr>
+              <td>Direccion: `+ cliente.direccion + `</td>
+              </tr>
+              <tr>
+              <td>Email: `+ cliente.email + `</td>
+              </tr>
+            </tbody>
+          </table>`;
             let html = `<ul class="list-group list-group-flush">
             <li class="list-group-item"><label><strong>Nombre:&nbsp</strong></label>`+ cliente.nombre + `</li>
             <li class="list-group-item"><label><strong>Apellido:&nbsp</strong></label>`+ cliente.apellido + `</li>
@@ -322,7 +335,7 @@ function vistaCliente(id: number) {
             <li class="list-group-item"><label><strong>Direccion:&nbsp</strong></label>`+ cliente.direccion + `</li>
             <li class="list-group-item"><label><strong>Email:&nbsp</strong></label>`+ cliente.email + `</li>
           </ul>`;
-            $("#vistaClienteBody").html(html);
+            $("#vistaClienteBody").html(htm);
             let htmlConfirmaBaja = `<h5>¿Está seguro?</h5>
             <br>
             <button class="btn btn-danger" onclick='bajaCliente(`+ cliente.id + `)'>Si</button>
@@ -452,17 +465,31 @@ function validarModificarCliente(id: number) {
 }
 
 function restablecerVista(id: number, nombre: string, apellido: string, documento: number, telefono: string, direccion: string, email: string) {
-    let html = `<ul class="list-group list-group-flush">
-    <li class="list-group-item"><label><strong>Nombre:&nbsp</strong></label>`+ nombre + `</li>
-    <li class="list-group-item"><label><strong>Apellido:&nbsp</strong></label>`+ apellido + `</li>
-    <li class="list-group-item"><label><strong>Documento:&nbsp</strong></label>`+ documento + `</li>
-    <li class="list-group-item"><label><strong>Telefono:&nbsp</strong></label>`+ telefono + `</li>
-    <li class="list-group-item"><label><strong>Direccion:&nbsp</strong></label>`+ direccion + `</li>
-    <li class="list-group-item"><label><strong>Email:&nbsp</strong></label>`+ email + `</li>
-  </ul>`;
+    let htm = `<table class="table table-sm">
+            <tbody>
+              <tr>
+                <td>Nombre: `+ nombre + `</td>
+              </tr>
+              <tr>
+              <td>Apellido: `+ apellido + `</td>
+              </tr>
+              <tr>
+              <td>Documento: `+ documento + `</td>
+              </tr>
+              <tr>
+              <td>Telefono: `+ telefono + `</td>
+              </tr>
+              <tr>
+              <td>Direccion: `+ direccion + `</td>
+              </tr>
+              <tr>
+              <td>Email: `+ email + `</td>
+              </tr>
+            </tbody>
+          </table>`;
     let footer = `<button onclick="modificarCliente(` + id + `,'` + nombre + `','` + apellido + `','` + documento + `','` + telefono + `','` + direccion + `','` + email + `')" class="btn btn-warning">Modificar</button>
     <button class="btn btn-danger" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="dropdown-item" data-target="#bajaCliente">Eliminar</button>`;
-    $("#vistaClienteBody").html(html);
+    $("#vistaClienteBody").html(htm);
     $("#vistaClienteFooter").html(footer);
 }
 
@@ -482,3 +509,10 @@ function bajaCliente(id: number) {
         }
     });
 }
+
+function ucwords(str) {
+    return (str + '')
+      .replace(/^([a-z\u00E0-\u00FC])|\s+([a-z\u00E0-\u00FC])/g, function($1) {
+        return $1.toUpperCase();
+      });
+  }

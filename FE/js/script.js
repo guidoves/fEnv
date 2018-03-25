@@ -122,40 +122,29 @@ function altaCliente() {
         "direccion": direccion,
         "email": email
     };
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4) {
-            if (xhr.status == 200) {
-                alert(xhr.response.ok);
-                $("#btnCerrarAltaCliente").click();
-                agendaTemplate();
-            }
-        }
-    };
-    xhr.open("POST", "http://localhost/workspace/fEnv/public/nuevocliente", true);
-    xhr.setRequestHeader("Content-type", "application/json");
-    xhr.send(cliente);
-    /*$.ajax({
+    $.ajax({
         data: cliente,
         type: "post",
         url: "http://localhost/workspace/fEnv/public/nuevocliente",
-        success: function (response,status) {
-            console.log(status.toString());
-            alert(response.ok);
-            $("#btnCerrarAltaCliente").click();
-            agendaTemplate();
+        success: function (response, status, xhr) {
+            if (xhr.status == 200) {
+                console.log(response);
+                $("#btnCerrarAltaCliente").click();
+                agendaTemplate();
+            }
+            else if (xhr.status == 202) {
+                var mensaje = "";
+                if (response.email != null)
+                    mensaje += response.email + ". ";
+                if (response.documento != null)
+                    mensaje += response.documento;
+                alert(mensaje);
+            }
         },
         error: function (response) {
             alert(response.statusText);
         },
-        statusCode : {
-            202: function(){
-                alert("jaja");
-            }
-        }
-
-    })
-    */
+    });
 }
 function cerrarAltaCliente() {
     restablecerAltaCliente();
@@ -210,6 +199,7 @@ function agendaTemplate() {
 }
 function buscarCliente(clientes) {
     var valor = String($("#txtBuscarCliente").val());
+    valor = ucwords(valor.toLowerCase());
     var resultado = clientes.filter(function (cliente) {
         return cliente.nombre == valor || cliente.apellido == valor || cliente.documento == valor || cliente.telefono == valor || cliente.email == valor;
     });
@@ -238,8 +228,9 @@ function vistaCliente(id) {
                 direccion: response[0].direccion,
                 email: response[0].email
             };
+            var htm = "<table class=\"table table-sm\">\n            <tbody>\n              <tr>\n                <td>Nombre: " + cliente.nombre + "</td>\n              </tr>\n              <tr>\n              <td>Apellido: " + cliente.apellido + "</td>\n              </tr>\n              <tr>\n              <td>Documento: " + cliente.documento + "</td>\n              </tr>\n              <tr>\n              <td>Telefono: " + cliente.telefono + "</td>\n              </tr>\n              <tr>\n              <td>Direccion: " + cliente.direccion + "</td>\n              </tr>\n              <tr>\n              <td>Email: " + cliente.email + "</td>\n              </tr>\n            </tbody>\n          </table>";
             var html = "<ul class=\"list-group list-group-flush\">\n            <li class=\"list-group-item\"><label><strong>Nombre:&nbsp</strong></label>" + cliente.nombre + "</li>\n            <li class=\"list-group-item\"><label><strong>Apellido:&nbsp</strong></label>" + cliente.apellido + "</li>\n            <li class=\"list-group-item\"><label><strong>Documento:&nbsp</strong></label>" + cliente.documento + "</li>\n            <li class=\"list-group-item\"><label><strong>Telefono:&nbsp</strong></label>" + cliente.telefono + "</li>\n            <li class=\"list-group-item\"><label><strong>Direccion:&nbsp</strong></label>" + cliente.direccion + "</li>\n            <li class=\"list-group-item\"><label><strong>Email:&nbsp</strong></label>" + cliente.email + "</li>\n          </ul>";
-            $("#vistaClienteBody").html(html);
+            $("#vistaClienteBody").html(htm);
             var htmlConfirmaBaja = "<h5>\u00BFEst\u00E1 seguro?</h5>\n            <br>\n            <button class=\"btn btn-danger\" onclick='bajaCliente(" + cliente.id + ")'>Si</button>\n            <button class=\"btn btn-secondary\" data-dismiss=\"modal\">No</button>";
             $("#bodyBajaCliente").html(htmlConfirmaBaja);
             $("#vistaClienteFooter").html("<button onclick=\"modificarCliente(" + cliente.id + ",'" + cliente.nombre + "','" + cliente.apellido + "','" + cliente.documento + "','" + cliente.telefono + "','" + cliente.direccion + "','" + cliente.email + "')\" class=\"btn btn-warning\">Modificar</button>\n            <button class=\"btn btn-danger\" data-toggle=\"modal\" data-backdrop=\"static\" data-keyboard=\"false\" class=\"dropdown-item\" data-target=\"#bajaCliente\">Eliminar</button>");
@@ -338,9 +329,9 @@ function validarModificarCliente(id) {
     }
 }
 function restablecerVista(id, nombre, apellido, documento, telefono, direccion, email) {
-    var html = "<ul class=\"list-group list-group-flush\">\n    <li class=\"list-group-item\"><label><strong>Nombre:&nbsp</strong></label>" + nombre + "</li>\n    <li class=\"list-group-item\"><label><strong>Apellido:&nbsp</strong></label>" + apellido + "</li>\n    <li class=\"list-group-item\"><label><strong>Documento:&nbsp</strong></label>" + documento + "</li>\n    <li class=\"list-group-item\"><label><strong>Telefono:&nbsp</strong></label>" + telefono + "</li>\n    <li class=\"list-group-item\"><label><strong>Direccion:&nbsp</strong></label>" + direccion + "</li>\n    <li class=\"list-group-item\"><label><strong>Email:&nbsp</strong></label>" + email + "</li>\n  </ul>";
+    var htm = "<table class=\"table table-sm\">\n            <tbody>\n              <tr>\n                <td>Nombre: " + nombre + "</td>\n              </tr>\n              <tr>\n              <td>Apellido: " + apellido + "</td>\n              </tr>\n              <tr>\n              <td>Documento: " + documento + "</td>\n              </tr>\n              <tr>\n              <td>Telefono: " + telefono + "</td>\n              </tr>\n              <tr>\n              <td>Direccion: " + direccion + "</td>\n              </tr>\n              <tr>\n              <td>Email: " + email + "</td>\n              </tr>\n            </tbody>\n          </table>";
     var footer = "<button onclick=\"modificarCliente(" + id + ",'" + nombre + "','" + apellido + "','" + documento + "','" + telefono + "','" + direccion + "','" + email + "')\" class=\"btn btn-warning\">Modificar</button>\n    <button class=\"btn btn-danger\" data-toggle=\"modal\" data-backdrop=\"static\" data-keyboard=\"false\" class=\"dropdown-item\" data-target=\"#bajaCliente\">Eliminar</button>";
-    $("#vistaClienteBody").html(html);
+    $("#vistaClienteBody").html(htm);
     $("#vistaClienteFooter").html(footer);
 }
 function bajaCliente(id) {
@@ -357,5 +348,11 @@ function bajaCliente(id) {
             $("#btnCerrarVistaCliente").click();
             agendaTemplate();
         }
+    });
+}
+function ucwords(str) {
+    return (str + '')
+        .replace(/^([a-z\u00E0-\u00FC])|\s+([a-z\u00E0-\u00FC])/g, function ($1) {
+        return $1.toUpperCase();
     });
 }
