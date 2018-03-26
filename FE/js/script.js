@@ -208,6 +208,7 @@ function buscarCliente(clientes) {
         for (var index = 0; index < resultado.length; index++) {
             html += "<tr><td>" + resultado[index].apellido + "</td><td>" + resultado[index].nombre + "</td><td>" + resultado[index].documento + "</td><td><button class='btn btn-info' data-controls-modal='vistaCliente' data-backdrop='static' data-keyboard='false' class='dropdown-item' data-toggle='modal' data-target='#vistaCliente' onclick='vistaCliente(" + resultado[index].id + ")'>Detalle</button></td></tr>";
         }
+        html += "<tr><td><button class=\"btn btn-primary\" onclick=\"agendaTemplate()\">Vista todos</button></td></tr>";
     }
     else {
         html = "<strong style='color : red'>No hay datos de clientes.</strong>";
