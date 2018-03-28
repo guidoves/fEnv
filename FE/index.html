@@ -28,7 +28,8 @@
 								Operaciones
 							</a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown1">
-								<a href="#" class="dropdown-item">Nuevo Envio</a>
+								<a href="#" data-controls-modal="nuevaOperacion" data-backdrop="static" data-keyboard="false" class="dropdown-item" data-toggle="modal"
+								 data-target="#nuevaOperacion">Nuevo Envio</a>
 								<a href="#" class="dropdown-item">Historial Operaciones</a>
 							</div>
 						</li>
@@ -115,7 +116,9 @@
 			<div class="modal-content">
 
 				<div class="modal-header">
-					<h5 class="modal-title"><strong>Cliente</strong></h5>
+					<h5 class="modal-title">
+						<strong>Cliente</strong>
+					</h5>
 					<button id="btnCerrarVistaCliente" type="button" class="close" onclick="" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -145,8 +148,34 @@
 				</div>
 			</div>
 		</div>
-
 	</div>
+	<!-- OPERATIVAS-->
+	<div id="nuevaOperacion" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Nuevo Envio</h5>
+					<button type="button" class="close" onclick="" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="form-group">
+							<label for="txtBuscarClienteOperacion">Buscar Cliente</label>
+							<input id="txtBuscarClienteOperacion" class="form-control mr-sm-2" type="search" placeholder="Ingrese..">
+							<button id="btnBuscarClienteOperacion" onclick="busquedaClienteOperacion()" class="btn btn-primary my-2 my-sm-2" type="submit">Buscar</button>
+						</div>
+					</form>
+				</div>
+				<div id="footerOperaciones" class="modal-footer">
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer>		
+
+	</footer>
 </body>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -156,5 +185,6 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
  crossorigin="anonymous"></script>
 <script src="js/clientes.js"></script>
+<script src="js/operativa.js"></script>
 
 </html>

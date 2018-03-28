@@ -1,3 +1,5 @@
+var urlServer = "http://localhost/workspace/fEnv/public";
+
 $(document).ready(function () {
 
     $("#eNombre").hide();
@@ -148,7 +150,7 @@ function altaCliente() {
     $.ajax({
         data: cliente,
         type: "post",
-        url: "http://localhost/workspace/fEnv/public/nuevocliente",
+        url: urlServer + "/nuevocliente",
         success: function (response, status, xhr) {
             if (xhr.status == 200) {
                 console.log(response);
@@ -219,7 +221,7 @@ function agendaTemplate() {
                     </div>
                     <div class="elementoAgenda">
                         <form class="form-inline my-2 my-lg-0">
-                            <input id="txtBuscarCliente" class="form-control mr-sm-2" type="search" placeholder="Ingrese dato..">
+                            <input id="txtBuscarCliente" class="form-control mr-sm-2" type="search" placeholder="Ingrese datos...">
                             <button id="btnBuscarCliente" class="btn btn-outline-success my-2 my-sm-2" type="submit">Buscar Cliente</button>
                         </form>
                     </div>
@@ -233,7 +235,7 @@ function agendaTemplate() {
                     <tr>
                         <th scope="col">Apellido</th>
                         <th scope="col">Nombre</th>
-                        <th scope="col">Documento</th>
+                        <th scope="col">Teléfono</th>
                         <th scope="col">Acción</th>
                     </tr>
                 </thead>
@@ -241,24 +243,27 @@ function agendaTemplate() {
                 </tbody>
             </table>
         </div>
+        <div class="card-footer">
+            <div id=footerAgenda></div>
+        </div>
     </div>
 </div>`;
 
     $.ajax({
         type: "get",
-        url: "http://localhost/workspace/fEnv/public/operativas/clientesordenados",
+        url: urlServer + "/operativas/clientesordenados",
         success: function (response) {
             $("#index").html(template);
             let body: string = "";
 
             for (let index = 0; index < response.length; index++) {
-                body += "<tr><td>" + response[index].apellido + "</td><td>" + response[index].nombre + "</td><td>" + response[index].documento + "</td><td><button class='btn btn-info' data-controls-modal='vistaCliente' data-backdrop='static' data-keyboard='false' class='dropdown-item' data-toggle='modal' data-target='#vistaCliente' onclick='vistaCliente(" + response[index].id + ")'>Detalle</button></td></tr>";
+                body += "<tr><td>" + response[index].apellido + "</td><td>" + response[index].nombre + "</td><td>" + response[index].telefono + "</td><td><button class='btn btn-info' data-controls-modal='vistaCliente' data-backdrop='static' data-keyboard='false' class='dropdown-item' data-toggle='modal' data-target='#vistaCliente' onclick='vistaCliente(" + response[index].id + ")'>Detalle</button></td></tr>";
 
             }
             $("#bodyAgenda").html(body);
 
             $("#btnBuscarCliente").on("click", function () {
-                buscarCliente(response);
+                buscarAgenda(response);
             });
 
         },
@@ -267,26 +272,41 @@ function agendaTemplate() {
         }
     });
 }
-function buscarCliente(clientes: any[]) {
+function buscarCliente(cliente: string, datos: any) {
+
+    let resultado = null;
+
+    if (cliente != null && cliente != "") {
+        let valor = ucwords(cliente.toLowerCase());
+        resultado = datos.filter(function (cliente) {
+            return cliente.nombre == valor || cliente.apellido == valor || cliente.documento == valor || cliente.telefono == valor || cliente.email == valor;
+        });
+    }
+    return resultado;
+}
+function buscarAgenda(datos: any) {
+
     let valor: string = String($("#txtBuscarCliente").val());
-    valor = ucwords(valor.toLowerCase());
-
-    let resultado = clientes.filter(function (cliente) {
-        return cliente.nombre == valor || cliente.apellido == valor || cliente.documento == valor || cliente.telefono == valor || cliente.email == valor;
-    });
+    let resultado: any = buscarCliente(valor, datos);
     let html = "";
-    if (resultado.length != 0) {
+    let html_dos = `<button class="btn btn-primary" onclick="agendaTemplate()">Vista todos</button>`;
+    if (resultado != null) {
 
-        for (let index = 0; index < resultado.length; index++) {
-            html += "<tr><td>" + resultado[index].apellido + "</td><td>" + resultado[index].nombre + "</td><td>" + resultado[index].documento + "</td><td><button class='btn btn-info' data-controls-modal='vistaCliente' data-backdrop='static' data-keyboard='false' class='dropdown-item' data-toggle='modal' data-target='#vistaCliente' onclick='vistaCliente(" + resultado[index].id + ")'>Detalle</button></td></tr>";
+        if (resultado.length != 0) {
+            for (let index = 0; index < resultado.length; index++) {
+                html += "<tr><td>" + resultado[index].apellido + "</td><td>" + resultado[index].nombre + "</td><td>" + resultado[index].documento + "</td><td><button class='btn btn-info' data-controls-modal='vistaCliente' data-backdrop='static' data-keyboard='false' class='dropdown-item' data-toggle='modal' data-target='#vistaCliente' onclick='vistaCliente(" + resultado[index].id + ")'>Detalle</button></td></tr>";
 
+            }
+            $("#bodyAgenda").html(html);
+            $("#footerAgenda").html(html_dos);
         }
-        html += `<tr><td><button class="btn btn-primary" onclick="agendaTemplate()">Vista todos</button></td></tr>`;
+        else if (resultado.length == 0) {
+            html = "<strong style='color : red'>No hay datos de clientes.</strong>";
+            $("#bodyAgenda").html(html);
+            $("#footerAgenda").html(html_dos);
+        }
     }
-    else {
-        html = "<strong style='color : red'>No hay datos de clientes.</strong>";
-    }
-    $("#bodyAgenda").html(html);
+
 }
 
 
@@ -295,7 +315,7 @@ function vistaCliente(id: number) {
 
     $.ajax({
         type: "get",
-        url: "http://localhost/workspace/fEnv/public/operativas/clienteid?id=" + id,
+        url: urlServer + "/operativas/clienteid?id=" + id,
         success: function (response) {
             let cliente = {
                 id: response[0].id,
@@ -452,7 +472,7 @@ function validarModificarCliente(id: number) {
         $.ajax({
             data: cliente,
             type: "post",
-            url: "http://localhost/workspace/fEnv/public/modificarcliente",
+            url: urlServer + "/modificarcliente",
             success: function (response) {
                 alert(response.ok);
                 $("#btnCerrarVistaCliente").click();
@@ -499,7 +519,7 @@ function bajaCliente(id: number) {
     $.ajax({
         data: cliente,
         type: "post",
-        url: "http://localhost/workspace/fEnv/public/bajacliente",
+        url: urlServer + "/bajacliente",
         error: function (response) {
             alert(response.statusText);
         },
@@ -513,7 +533,7 @@ function bajaCliente(id: number) {
 
 function ucwords(str) {
     return (str + '')
-      .replace(/^([a-z\u00E0-\u00FC])|\s+([a-z\u00E0-\u00FC])/g, function($1) {
-        return $1.toUpperCase();
-      });
-  }
+        .replace(/^([a-z\u00E0-\u00FC])|\s+([a-z\u00E0-\u00FC])/g, function ($1) {
+            return $1.toUpperCase();
+        });
+}
