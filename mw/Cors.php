@@ -6,6 +6,7 @@ class Cors{
 		/*
 		al ingresar no hago nada
 		*/
+		
 		 $response = $next($request, $response);
 		 
 		 //solo afecto la salida con los header

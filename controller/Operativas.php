@@ -4,7 +4,7 @@ require_once "../model/Clientes.php";
 class Operativas{
     
     public function traerClientesOrdenados($request,$response){
-        
+       
         $clientes = Clientes::traerTodosOrdenadosPorNombre();
         if($clientes != null){
             return $response->withJson($clientes,200);

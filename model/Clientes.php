@@ -94,7 +94,7 @@ class Clientes{
     }
 
     public static function traerTodosOrdenadosPorNombre(){
-
+        
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
         $consulta = $objetoAccesoDato->RetornarConsulta("SELECT id,nombre,apellido,documento,telefono,direccion,email from clientes WHERE estado=:estado ORDER BY apellido,nombre,documento");
         $consulta->bindValue(':estado','ACTIVO',PDO::PARAM_STR);
