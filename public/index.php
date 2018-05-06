@@ -33,12 +33,18 @@ $app->get('/hello/{name}', function (Request $request, Response $response) {
 });
 
 //General
-$app->post('/nuevocliente', \EmpleadoController::class . ':AltaCliente')->add(\MWValidaciones::class . ':ValidarNuevoCliente')->add(\Cors::class . ':HabilitarCORSTodos');
-$app->post('/bajacliente', \EmpleadoController::class . ':BajaCliente')->add(\Cors::class . ':HabilitarCORSTodos');
-$app->post('/modificarcliente', \EmpleadoController::class . ':ModificarCliente')->add(\Cors::class . ':HabilitarCORSTodos');
+$app->post('/nuevocliente', \EmpleadoController::class . ':AltaCliente')
+  ->add(\MWValidaciones::class . ':ValidarNuevoCliente')
+  ->add(\Cors::class . ':HabilitarCORSTodos');
+$app->post('/bajacliente', \EmpleadoController::class . ':BajaCliente')
+  ->add(\Cors::class . ':HabilitarCORSTodos');
+$app->post('/modificarcliente', \EmpleadoController::class . ':ModificarCliente')
+  ->add(\Cors::class . ':HabilitarCORSTodos');
 //Operativas
-$app->get('/operativas/clientesordenados', \Operativas::class . ':traerClientesOrdenados')->add(\Cors::class . ':HabilitarCORSTodos');
-$app->get('/operativas/clienteid', \Operativas::class . ':traerCliente')->add(\Cors::class . ':HabilitarCORSTodos');
+$app->get('/operativas/clientesordenados', \Operativas::class . ':traerClientesOrdenados')
+  ->add(\Cors::class . ':HabilitarCORSTodos');
+$app->get('/operativas/clienteid', \Operativas::class . ':traerCliente')
+  ->add(\Cors::class . ':HabilitarCORSTodos');
 
 //Rutas Solo Admin
 //$app->post('/nuevoempleado', \EmpleadoController::class . ':NuevoEmpleado')->add(\MWValidaciones::class . ':ValidarNuevoEmpleado')->add(\ValidacionPermisos::class . ':VerificarAdmin');

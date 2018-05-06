@@ -1,5 +1,11 @@
-.card{
+body{
+    font-size: 18px;
+}
+
+.login{
     display: flex;
+    flex-direction: column;
     align-items: center;
     
+
 }

@@ -10,9 +10,10 @@ class MwValidaciones{
         $reg_nombre_apellido = "/^[a-zA-ZÑñáéíóúÁÉÍÓÚäëïöüÄËÏÖÜàèìòùÀÈÌÒÙ \s]{1,20}$/";
         $reg_email = "/^[0-9a-z_\\-\\.]+@[0-9a-z\\-\\.]+\\.[a-z]{2,4}$/";
         $reg_documento = "/^\\d{0,9}$/";
-        
+
+
         //Comprueba si llegaron los campos requeridos
-        if(isset($request->getParsedBody()['nombre']) && isset($request->getParsedBody()['email']) && 
+        if(isset($request->getParsedBody()['nombre']) && isset($request->getParsedBody()['email']) &&
         isset($request->getParsedBody()['apellido']) && isset($request->getParsedBody()['documento']) &&
         isset($request->getParsedBody()['telefono']) && isset($request->getParsedBody()['direccion'])){
             //nombre
@@ -90,7 +91,7 @@ class MwValidaciones{
             //direccion
             if(!empty($request->getParsedBody()['direccion'])){
                 if(count($request->getParsedBody()['direccion']) > 0 && count($request->getParsedBody()['direccion']) < 51){
-                
+
                     $dataOk['direccion'] = "direccion";
                 }
                 else{
@@ -100,7 +101,7 @@ class MwValidaciones{
             else{
                 $errores['direccion'] = "La direccion esta vacia";
             }
-            
+
             if(count($dataOk) == 6){
                 //TODO OK!
                 $response = $next($request,$response);
